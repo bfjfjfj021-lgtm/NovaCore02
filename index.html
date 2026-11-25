@@ -1,85 +1,162 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <meta name="theme-color" content="#101323" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f4f8ff">
   <title>StarEarn</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <style>
-    :root { color-scheme: dark; --bg:#101323; --card:#1b2036; --accent:#8a72ff; --muted:#aab0c8; }
     * { box-sizing: border-box; }
-    body { margin:0; min-height:100vh; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; color:#fff; background:radial-gradient(circle at top,#29234d 0%,var(--bg) 48%); }
-    main { max-width:480px; margin:auto; padding:28px 18px 36px; }
-    header { text-align:center; padding:20px 8px 26px; }
-    .logo { width:74px; height:74px; display:grid; place-items:center; margin:0 auto 14px; border-radius:24px; background:linear-gradient(135deg,#a996ff,#5d47dc); font-size:34px; box-shadow:0 12px 34px #5d47dc55; }
-    h1 { margin:0; font-size:28px; letter-spacing:.2px; }
-    header p { margin:9px 0 0; color:var(--muted); }
-    .card { background:var(--card); border:1px solid #ffffff12; border-radius:20px; padding:20px; margin:12px 0; box-shadow:0 12px 30px #0002; }
-    .card h2 { font-size:18px; margin:0 0 8px; }
-    .card p { color:var(--muted); font-size:14px; line-height:1.5; margin:0; }
-    .btn { width:100%; border:0; border-radius:14px; padding:15px 16px; margin-top:16px; background:linear-gradient(135deg,#947dff,#6a53e9); color:white; font-weight:700; font-size:16px; cursor:pointer; }
-    .btn:disabled { opacity:.65; }
-    .secondary { background:#292e47; }
-    #status { min-height:20px; margin-top:12px; color:#d2cbff; font-size:13px; text-align:center; }
-    footer { text-align:center; color:#777f9d; font-size:12px; padding:20px 0; }
+    body {
+      margin: 0; padding: 20px 20px 35px; font-family: Arial, sans-serif;
+      background: #f4f8ff; color: #17243b;
+    }
+    .app { max-width: 460px; margin: auto; }
+    .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:25px; }
+    .logo { font-size:23px; font-weight:800; color:#2878ed; }
+    .profile { background:white; padding:11px 15px; border-radius:15px; font-weight:bold; }
+    .welcome { font-size:25px; font-weight:800; margin-bottom:7px; }
+    .subtitle { color:#8190a7; margin-bottom:22px; }
+    .balance {
+      background:linear-gradient(135deg,#2878ed,#65a5ff); color:white;
+      border-radius:25px; padding:25px; box-shadow:0 12px 30px #2878ed30;
+    }
+    .balance-label { opacity:.9; font-size:14px; }
+    .balance-number { font-size:42px; font-weight:800; margin:12px 0; }
+    .balance-note { font-size:13px; opacity:.9; }
+    .section-title { font-size:19px; font-weight:800; margin:27px 0 15px; }
+    .card { background:white; border-radius:20px; padding:20px; margin-bottom:14px; box-shadow:0 5px 20px #243b5b0b; }
+    .ad-title { font-size:18px; font-weight:800; margin-bottom:8px; }
+    .muted { color:#8491a6; font-size:14px; line-height:1.5; }
+    button { border:0; border-radius:15px; padding:16px; width:100%; font-size:16px; font-weight:800; cursor:pointer; margin-top:15px; }
+    button:disabled { opacity:.5; cursor:not-allowed; }
+    .primary { background:#2878ed; color:white; }
+    .secondary { background:#eaf2ff; color:#2878ed; }
+    .stat-row { display:flex; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid #edf1f7; }
+    .stat-row:last-child { border-bottom:0; }
+    .notice { background:#fff8e8; color:#946600; padding:13px; border-radius:13px; font-size:13px; line-height:1.5; margin-top:15px; }
+    .status { color:#8491a6; font-size:13px; margin-top:12px; text-align:center; min-height:18px; }
+    .footer { text-align:center; color:#a0aabd; font-size:12px; margin-top:30px; }
   </style>
 </head>
 <body>
-  <main>
-    <header>
-      <div class="logo">⭐</div>
-      <h1>StarEarn</h1>
-      <p>Добро пожаловать в Mini App</p>
-    </header>
-    <section class="card">
-      <h2>🎬 Реклама</h2>
-      <p>Нажми кнопку, чтобы запустить рекламный блок. Для реальных показов нужно получить Block ID в кабинете AdsGram и вставить его в код ниже.</p>
-      <button class="btn" id="adButton">Посмотреть рекламу</button>
-      <div id="status" role="status"></div>
-    </section>
-    <section class="card">
-      <h2>✨ Приложение готовится</h2>
-      <p>Здесь позже можно разместить задания, бонусы, ежедневные активности и другие функции. Не начисляй реальные награды только по событию на клиенте — подтверждение просмотров и выдачу наград лучше делать на сервере.</p>
-      <button class="btn secondary" id="tgButton">Открыть Telegram</button>
-    </section>
-    <footer>StarEarn · версия для тестирования</footer>
-  </main>
-  <script>
-    const tg = window.Telegram?.WebApp;
-    tg?.ready();
-    tg?.expand();
+<div class="app">
+  <div class="header">
+    <div class="logo">⭐ StarEarn</div>
+    <div class="profile" id="profileName">👤 Профиль</div>
+  </div>
 
-    // 1) Замени строку ниже на Block ID из AdsGram Publisher.
-    // 2) Не публикуй секретные токены в HTML/JavaScript.
-    const ADSGRAM_BLOCK_ID = "61897";
-    let adController = null;
-    if (window.Adsgram && ADSGRAM_BLOCK_ID !== "PASTE_YOUR_ADSGRAM_BLOCK_ID_HERE") {
-      try { adController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID }); }
-      catch (e) { console.warn("AdsGram init failed", e); }
+  <div class="welcome">Привет! 👋</div>
+  <div class="subtitle">Добро пожаловать в StarEarn</div>
+
+  <div class="balance">
+    <div class="balance-label">Твой баланс</div>
+    <div class="balance-number" id="balance">0 ⭐</div>
+    <div class="balance-note">Копи звёзды и подавай заявку на вывод</div>
+  </div>
+
+  <div class="section-title">🎬 Заработок</div>
+  <div class="card">
+    <div class="ad-title">Посмотри рекламу</div>
+    <div class="muted">Просматривай доступную рекламу Adsgram. Начисление награды будет подтверждаться сервером.</div>
+    <button class="primary" id="watchButton">▶ Посмотреть рекламу</button>
+    <div class="status" id="adStatus" aria-live="polite"></div>
+  </div>
+
+  <div class="section-title">💰 Вывод звёзд</div>
+  <div class="card">
+    <div class="stat-row"><span>Минимальный вывод</span><b>20 ⭐</b></div>
+    <div class="stat-row"><span>Твой баланс</span><b id="withdrawBalance">0 ⭐</b></div>
+    <button class="secondary" id="withdrawButton" disabled>💎 Вывести звёзды</button>
+    <div class="status" id="withdrawStatus" aria-live="polite">Для вывода необходимо накопить 20 ⭐</div>
+    <div class="notice">Заявки будут отправляться на проверку. Выплата производится после подтверждения.</div>
+  </div>
+
+  <div class="section-title">📊 Статистика</div>
+  <div class="card">
+    <div class="stat-row"><span>Просмотры рекламы</span><b id="views">0</b></div>
+    <div class="stat-row"><span>Всего заработано</span><b id="earned">0 ⭐</b></div>
+    <div class="stat-row"><span>История операций</span><b>Пока пусто</b></div>
+  </div>
+
+  <div class="footer">StarEarn © 2026</div>
+</div>
+
+<script>
+  const tg = window.Telegram?.WebApp;
+  tg?.ready();
+  tg?.expand();
+
+  const MIN_WITHDRAW = 20;
+  // Вставь сюда Block ID, скопированный в Adsgram через Show code → Copy BlockID.
+  // Unit ID 61897 не следует автоматически считать Block ID.
+  const ADSGRAM_BLOCK_ID = "ВСТАВЬ_BLOCK_ID";
+
+  // Демонстрационный интерфейс: баланс не начисляется в браузере.
+  // Реальные балансы и заявки подключаются через защищённый сервер и базу данных.
+  let balance = 0;
+  let views = 0;
+
+  const balanceElement = document.getElementById("balance");
+  const withdrawBalance = document.getElementById("withdrawBalance");
+  const withdrawButton = document.getElementById("withdrawButton");
+  const watchButton = document.getElementById("watchButton");
+  const adStatus = document.getElementById("adStatus");
+
+  const user = tg?.initDataUnsafe?.user;
+  if (user) {
+    document.getElementById("profileName").textContent =
+      "👤 " + (user.first_name || "Профиль");
+  }
+
+  function updateScreen() {
+    balanceElement.textContent = balance + " ⭐";
+    withdrawBalance.textContent = balance + " ⭐";
+    document.getElementById("views").textContent = views;
+    document.getElementById("earned").textContent = balance + " ⭐";
+    withdrawButton.disabled = balance < MIN_WITHDRAW;
+  }
+
+  watchButton.addEventListener("click", async () => {
+    if (!window.Adsgram) {
+      adStatus.textContent = "Adsgram не загрузился.";
+      return;
+    }
+    if (!ADSGRAM_BLOCK_ID || ADSGRAM_BLOCK_ID === "ВСТАВЬ_BLOCK_ID") {
+      adStatus.textContent = "Сначала настрой Block ID Adsgram.";
+      return;
     }
 
-    const adButton = document.getElementById("adButton");
-    const status = document.getElementById("status");
-    adButton.addEventListener("click", async () => {
-      if (!adController) {
-        status.textContent = "Сначала вставь свой AdsGram Block ID в код.";
-        return;
+    try {
+      watchButton.disabled = true;
+      adStatus.textContent = "Загружаем рекламу...";
+      const controller = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
+      const result = await controller.show();
+
+      if (result?.done) {
+        views += 1;
+        adStatus.textContent = "Просмотр завершён. Награда ожидает серверной проверки.";
+      } else {
+        adStatus.textContent = "Просмотр не подтверждён.";
       }
-      adButton.disabled = true;
-      status.textContent = "Загрузка рекламы…";
-      try {
-        const result = await adController.show();
-        status.textContent = result?.done ? "Показ завершён." : "Реклама закрыта.";
-      } catch (err) {
-        status.textContent = "Реклама сейчас недоступна. Попробуй позже.";
-        console.warn("Ad display error", err);
-      } finally { adButton.disabled = false; }
-    });
-    document.getElementById("tgButton").addEventListener("click", () => {
-      if (tg) tg.close(); else status.textContent = "Открой приложение через Telegram.";
-    });
-  </script>
+    } catch (error) {
+      console.error(error);
+      adStatus.textContent = "Реклама недоступна. Попробуй позже.";
+    } finally {
+      watchButton.disabled = false;
+      updateScreen();
+    }
+  });
+
+  withdrawButton.addEventListener("click", () => {
+    if (balance < MIN_WITHDRAW) return;
+    document.getElementById("withdrawStatus").textContent =
+      "Заявки пока не подключены. Сначала настроим сервер.";
+  });
+
+  updateScreen();
+</script>
 </body>
 </html>
