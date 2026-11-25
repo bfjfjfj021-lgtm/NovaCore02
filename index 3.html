@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="theme-color" content="#101323" />
+  <title>StarEarn</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+  <style>
+    :root { color-scheme: dark; --bg:#101323; --card:#1b2036; --accent:#8a72ff; --muted:#aab0c8; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; color:#fff; background:radial-gradient(circle at top,#29234d 0%,var(--bg) 48%); }
+    main { max-width:480px; margin:auto; padding:28px 18px 36px; }
+    header { text-align:center; padding:20px 8px 26px; }
+    .logo { width:74px; height:74px; display:grid; place-items:center; margin:0 auto 14px; border-radius:24px; background:linear-gradient(135deg,#a996ff,#5d47dc); font-size:34px; box-shadow:0 12px 34px #5d47dc55; }
+    h1 { margin:0; font-size:28px; letter-spacing:.2px; }
+    header p { margin:9px 0 0; color:var(--muted); }
+    .card { background:var(--card); border:1px solid #ffffff12; border-radius:20px; padding:20px; margin:12px 0; box-shadow:0 12px 30px #0002; }
+    .card h2 { font-size:18px; margin:0 0 8px; }
+    .card p { color:var(--muted); font-size:14px; line-height:1.5; margin:0; }
+    .btn { width:100%; border:0; border-radius:14px; padding:15px 16px; margin-top:16px; background:linear-gradient(135deg,#947dff,#6a53e9); color:white; font-weight:700; font-size:16px; cursor:pointer; }
+    .btn:disabled { opacity:.65; }
+    .secondary { background:#292e47; }
+    #status { min-height:20px; margin-top:12px; color:#d2cbff; font-size:13px; text-align:center; }
+    footer { text-align:center; color:#777f9d; font-size:12px; padding:20px 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="logo">⭐</div>
+      <h1>StarEarn</h1>
+      <p>Добро пожаловать в Mini App</p>
+    </header>
+    <section class="card">
+      <h2>🎬 Реклама</h2>
+      <p>Нажми кнопку, чтобы запустить рекламный блок. Для реальных показов нужно получить Block ID в кабинете AdsGram и вставить его в код ниже.</p>
+      <button class="btn" id="adButton">Посмотреть рекламу</button>
+      <div id="status" role="status"></div>
+    </section>
+    <section class="card">
+      <h2>✨ Приложение готовится</h2>
+      <p>Здесь позже можно разместить задания, бонусы, ежедневные активности и другие функции. Не начисляй реальные награды только по событию на клиенте — подтверждение просмотров и выдачу наград лучше делать на сервере.</p>
+      <button class="btn secondary" id="tgButton">Открыть Telegram</button>
+    </section>
+    <footer>StarEarn · версия для тестирования</footer>
+  </main>
+  <script>
+    const tg = window.Telegram?.WebApp;
+    tg?.ready();
+    tg?.expand();
+
+    // 1) Замени строку ниже на Block ID из AdsGram Publisher.
+    // 2) Не публикуй секретные токены в HTML/JavaScript.
+    const ADSGRAM_BLOCK_ID = "PASTE_YOUR_ADSGRAM_BLOCK_ID_HERE";
+    let adController = null;
+    if (window.Adsgram && ADSGRAM_BLOCK_ID !== "PASTE_YOUR_ADSGRAM_BLOCK_ID_HERE") {
+      try { adController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID }); }
+      catch (e) { console.warn("AdsGram init failed", e); }
+    }
+
+    const adButton = document.getElementById("adButton");
+    const status = document.getElementById("status");
+    adButton.addEventListener("click", async () => {
+      if (!adController) {
+        status.textContent = "Сначала вставь свой AdsGram Block ID в код.";
+        return;
+      }
+      adButton.disabled = true;
+      status.textContent = "Загрузка рекламы…";
+      try {
+        const result = await adController.show();
+        status.textContent = result?.done ? "Показ завершён." : "Реклама закрыта.";
+      } catch (err) {
+        status.textContent = "Реклама сейчас недоступна. Попробуй позже.";
+        console.warn("Ad display error", err);
+      } finally { adButton.disabled = false; }
+    });
+    document.getElementById("tgButton").addEventListener("click", () => {
+      if (tg) tg.close(); else status.textContent = "Открой приложение через Telegram.";
+    });
+  </script>
+</body>
+</html>
