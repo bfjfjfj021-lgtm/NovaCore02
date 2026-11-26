@@ -150,7 +150,51 @@
     }
   });
 
-  withdrawButton.addEventListener("click", () => {
+  withdrawButton.addEventListener("click", async () => {
+  const status = document.getElementById("withdrawStatus");
+
+  if (balance < MIN_WITHDRAW) {
+    status.textContent = "Для вывода нужно накопить 20 ⭐";
+    return;
+  }
+
+  if (!tg?.initData) {
+    status.textContent = "Открой приложение через Telegram";
+    return;
+  }
+
+  status.textContent = "Проверяем заявку...";
+
+  try {
+    const response = await fetch(
+      "https://jrrzfzirgtyqeqjmljqj.supabase.co/functions/v1/wihh",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "sb_publishable_uuq5SVYF6NRc1gKQ8hAUwQ_-q20CpqU"
+        },
+        body: JSON.stringify({
+          initData: tg.initData,
+          amount: balance,
+          method: "Telegram Stars",
+          wallet: String(tg.initDataUnsafe?.user?.id || "")
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Не удалось отправить заявку");
+    }
+
+    status.textContent = "Заявка отправлена на проверку!";
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Не удалось отправить заявку. Попробуй позже.";
+  }
+});
     if (balance < MIN_WITHDRAW) return;
     document.getElementById("withdrawStatus").textContent =
       "Заявки пока не подключены. Сначала настроим сервер.";
