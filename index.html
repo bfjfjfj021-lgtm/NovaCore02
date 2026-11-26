@@ -1,94 +1,922 @@
-```
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Найди покой</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body { font-family: sans-serif; text-align: center; margin: 0; padding: 20px; color: #fff; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1080&q=80') no-repeat center center fixed; background-size: cover; min-height: 100vh; box-sizing: border-box; }
-    .top-bar { position: absolute; top: 15px; right: 15px; display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.6); padding: 8px 15px; border-radius: 30px; }
-    .ad-circle { width: 35px; height: 35px; background: #ff4b2b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; }
-    .stone { width: 150px; height: 150px; cursor: pointer; user-select: none; margin: 20px auto; background-size: cover; border-radius: 50%; }
-    button { padding: 12px 20px; margin: 5px; border: none; border-radius: 20px; background: rgba(255,255,255,0.2); color: white; cursor: pointer; }
-    .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.9); padding: 20px; border-radius: 10px; width: 80%; z-index: 10; }
-    .distraction { position: absolute; background: rgba(255,255,255,0.9); color: black; padding: 10px; border-radius: 5px; font-size: 14px; pointer-events: none; }
-    .bug { position: absolute; font-size: 30px; pointer-events: none; }
-  </style>
-</head>
-<body>
-
-  <div class="top-bar">
-    <div class="coin-counter">🪙 <span id="coins">0</span></div>
-    <div class="ad-circle" onclick="showAdsgramAd()">ADS</div>
-  </div>
-
-  <div style="margin-top: 80px;">
-    <h2>Найди покой</h2>
-    <p>Нажми и удерживай камень</p>
-    <div id="stone" class="stone" style="background-image: url('https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=300&auto=format&fit=crop');"></div>
-    <p id="timer">00:00</p>
-    <button onclick="document.getElementById('shop').style.display='block'">🪨 Магазин</button>
-  </div>
-
-  <div id="shop" class="modal">
-    <h3>Магазин камней</h3>
-    <p onclick="buyStone(0, 'https://images.unsplash.com/photo-1569003339405-ea396a5a8a90?w=300')">1. Базовый (Выбран)</p>
-    <p onclick="buyStone(1000, 'https://images.unsplash.com/photo-1611915387288-d8d2f624f83c?w=300')">2. Аметист (1000 🪙)</p>
-    <p onclick="buyStone(2000, 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=300')">3. Рубин (2000 🪙)</p>
-    <button onclick="document.getElementById('shop').style.display='none'">Закрыть</button>
-  </div>
-
-  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-  <script>
-    let coins = 0, timer = 0, interval, distInterval;
-    const stone = document.getElementById('stone');
-    
-    stone.addEventListener('mousedown', start);
-    stone.addEventListener('touchstart', start);
-    stone.addEventListener('mouseup', stop);
-    stone.addEventListener('touchend', stop);
-
-    function start() {
-      interval = setInterval(() => {
-        timer++;
-        document.getElementById('timer').innerText = new Date(timer * 1000).toISOString().substr(14, 5);
-        if (timer % 60 === 0) { coins += 10; updateCoins(); }
-      }, 1000);
-      
-      distInterval = setInterval(() => {
-        if(Math.random() > 0.5) spawnDistraction();
-        else spawnBug();
-      }, 3000);
-    }
-
-    function stop() { clearInterval(interval); clearInterval(distInterval); }
-    function updateCoins() { document.getElementById('coins').innerText = coins; }
-
-    function buyStone(price, url) {
-      if (coins >= price) { coins -= price; updateCoins(); stone.style.backgroundImage = `url('${url}')`; }
-      else alert("Недостаточно монет!");
-    }
-
-    function spawnDistraction() {
-      let d = document.createElement('div'); d.className = 'distraction';
-      d.innerText = ["Вам СМС от Банка", "Курьер приехал", "Новое сообщение"][Math.floor(Math.random()*3)];
-      d.style.top = Math.random()*80 + "%"; d.style.left = Math.random()*80 + "%";
-      document.body.appendChild(d); setTimeout(() => d.remove(), 2000);
-    }
-
-    function spawnBug() {
-      let b = document.createElement('div'); b.className = 'bug'; b.innerText = ["🕷️", "🪳"][Math.floor(Math.random()*2)];
-      b.style.top = Math.random()*80 + "%"; b.style.left = Math.random()*80 + "%";
-      document.body.appendChild(b); setTimeout(() => b.remove(), 1500);
-    }
-
-    const AdController = window.Adsgram.init({ blockId: "61897" });
-    function showAdsgramAd() {
-      AdController.show().then(() => { coins += 50; updateCoins(); alert("+50 монет!"); }).catch(err => console.log(err));
-    }
-  </script>
-</body>
-</html>
-```
+  
+<!DOCTYPE html>  
+<html lang="ru">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">  
+<meta name="theme-color" content="#102016">  
+<title>Stone Meditation</title>  
+  
+<style>  
+:root {  
+  --gold: #f0cf83;  
+  --glass: rgba(21, 31, 24, .72);  
+  --text: #f7f3e8;  
+}  
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }  
+body {  
+  margin: 0;  
+  color: var(--text);  
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;  
+  background: #102016;  
+  overflow: hidden;  
+  user-select: none;  
+}  
+button { font: inherit; border: 0; cursor: pointer; }  
+#scene {  
+  position: relative;  
+  height: 100dvh;  
+  min-height: 540px;  
+  overflow: hidden;  
+  isolation: isolate;  
+  background:  
+    radial-gradient(ellipse at 48% 28%, #d2d49a3b, transparent 30%),  
+    radial-gradient(ellipse at 50% 72%, #b5b98120, transparent 42%),  
+    linear-gradient(180deg, #718866 0%, #304e35 32%, #172b1c 66%, #09140d 100%);  
+}  
+#scene::before {  
+  content: "";  
+  position: absolute;  
+  inset: 0;  
+  z-index: -2;  
+  background:  
+    linear-gradient(76deg, transparent 0 8%, #0c1a10 8.5% 10%, transparent 10.5%),  
+    linear-gradient(105deg, transparent 0 17%, #152719 17.5% 20%, transparent 20.5%),  
+    linear-gradient(260deg, transparent 0 12%, #0a190f 12.5% 15%, transparent 15.5%),  
+    linear-gradient(285deg, transparent 0 22%, #142619 22.5% 25%, transparent 25.5%);  
+  opacity: .8;  
+}  
+.canopy {  
+  position: absolute;  
+  inset: 0 0 48% 0;  
+  z-index: -1;  
+  background: radial-gradient(ellipse at 50% 0%, #e8df9b3b, transparent 65%);  
+}  
+.light-rays {  
+  position: absolute;  
+  top: -10%;  
+  left: 20%;  
+  width: 65%;  
+  height: 58%;  
+  opacity: .24;  
+  transform: rotate(12deg);  
+  background: linear-gradient(180deg, #e8e4ae66, transparent 85%);  
+  filter: blur(24px);  
+  pointer-events: none;  
+}  
+.ground {  
+  position: absolute;  
+  z-index: -1;  
+  bottom: -7%;  
+  left: -20%;  
+  width: 140%;  
+  height: 43%;  
+  border-radius: 50% 50% 0 0;  
+  background:  
+    radial-gradient(ellipse at 25% 35%, #61704b 0 2%, transparent 3%),  
+    radial-gradient(ellipse at 72% 25%, #46553b 0 3%, transparent 4%),  
+    radial-gradient(ellipse at 50% 45%, #263725, #0b170e 70%);  
+}  
+.tree {  
+  position: absolute;  
+  bottom: 30%;  
+  width: 0;  
+  height: 0;  
+  border-left: 52px solid transparent;  
+  border-right: 52px solid transparent;  
+  border-bottom: 200px solid #102317;  
+  opacity: .8;  
+}  
+.tree::after {  
+  content: "";  
+  position: absolute;  
+  top: 65px;  
+  left: -38px;  
+  border-left: 38px solid transparent;  
+  border-right: 38px solid transparent;  
+  border-bottom: 150px solid #0b1a10;  
+}  
+.tree.a { left: -34px; transform: scale(1.35); }  
+.tree.b { left: 17%; transform: scale(.75); opacity: .5; }  
+.tree.c { right: -40px; transform: scale(1.4); }  
+.tree.d { right: 18%; transform: scale(.8); opacity: .5; }  
+.mist {  
+  position: absolute;  
+  width: 150%;  
+  height: 100px;  
+  left: -25%;  
+  top: 36%;  
+  border-radius: 50%;  
+  background: #d3ddc51b;  
+  filter: blur(27px);  
+  animation: mist 11s ease-in-out infinite alternate;  
+  pointer-events: none;  
+}  
+@keyframes mist {  
+  to { transform: translateX(9%) translateY(10px); }  
+}  
+  
+/* Верхняя панель */  
+.statusbar {  
+  position: absolute;  
+  top: max(10px, env(safe-area-inset-top));  
+  left: 20px;  
+  right: 20px;  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;  
+  font-size: 13px;  
+  text-shadow: 0 1px 5px #000;  
+}  
+.top-ui {  
+  position: absolute;  
+  top: max(42px, calc(env(safe-area-inset-top) + 32px));  
+  left: 16px;  
+  right: 16px;  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;  
+  gap: 8px;  
+}  
+.glass {  
+  background: var(--glass);  
+  border: 1px solid #ffffff25;  
+  box-shadow: 0 8px 30px #0002, inset 0 1px #ffffff12;  
+  backdrop-filter: blur(18px);  
+  -webkit-backdrop-filter: blur(18px);  
+}  
+.coins {  
+  padding: 10px 14px;  
+  border-radius: 30px;  
+  color: var(--gold);  
+  font-weight: 800;  
+}  
+.right-ui { display: flex; align-items: center; gap: 8px; }  
+.daily {  
+  font-size: 12px;  
+  padding: 10px 12px;  
+  border-radius: 30px;  
+  white-space: nowrap;  
+}  
+.ad-circle {  
+  width: 43px;  
+  height: 43px;  
+  border-radius: 50%;  
+  color: var(--gold);  
+  font-size: 11px;  
+  font-weight: 900;  
+  background: #17241bdf;  
+  border: 1px solid #e8d59b8c;  
+  box-shadow: 0 0 18px #e8d59b18;  
+}  
+  
+/* Заголовок */  
+.heading {  
+  position: absolute;  
+  top: 14%;  
+  left: 12px;  
+  right: 12px;  
+  text-align: center;  
+  text-shadow: 0 2px 12px #07130b;  
+}  
+.heading h1 {  
+  margin: 0;  
+  font-size: clamp(24px, 7vw, 32px);  
+  font-weight: 650;  
+  letter-spacing: .3px;  
+}  
+.heading p { margin: 6px 0 0; font-size: 12px; color: #e0e5d6; }  
+  
+/* Центральный камень */  
+.stone-zone {  
+  position: absolute;  
+  left: 0;  
+  right: 0;  
+  top: 27%;  
+  height: 43%;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+}  
+.stone-shadow {  
+  position: absolute;  
+  width: 75%;  
+  height: 20%;  
+  bottom: 8%;  
+  border-radius: 50%;  
+  background: #0009;  
+  filter: blur(24px);  
+}  
+.stone {  
+  position: relative;  
+  width: min(74vw, 330px);  
+  height: min(65vw, 285px);  
+  max-height: 90%;  
+  border-radius: 46% 52% 39% 43% / 39% 42% 52% 55%;  
+  background:  
+    radial-gradient(ellipse at 30% 17%, #ffffff65, transparent 16%),  
+    radial-gradient(ellipse at 65% 24%, #b6b9aa50, transparent 23%),  
+    radial-gradient(ellipse at 30% 68%, #151d18aa, transparent 37%),  
+    radial-gradient(ellipse at 78% 78%, #070c09b8, transparent 38%),  
+    repeating-linear-gradient(15deg, transparent 0 14px, #ffffff09 15px 16px),  
+    repeating-linear-gradient(103deg, #0000000a 0 9px, transparent 10px 22px),  
+    linear-gradient(140deg, #a5a99a 0%, #7a8175 21%, #555f54 49%, #343f35 75%, #242e26 100%);  
+  box-shadow:  
+    inset 9px 10px 16px #ffffff26,  
+    inset -17px -20px 30px #0009,  
+    inset 0 -3px 4px #0008,  
+    0 28px 35px #0008;  
+  transform: rotate(-3deg);  
+  touch-action: none;  
+  transition: filter .2s, transform .2s;  
+}  
+.stone::before {  
+  content: "";  
+  position: absolute;  
+  inset: 9% 12%;  
+  border-radius: inherit;  
+  background:  
+    repeating-linear-gradient(165deg, transparent 0 22px, #20292025 23px 24px, transparent 25px 38px),  
+    repeating-linear-gradient(25deg, transparent 0 33px, #ffffff12 34px 35px, transparent 36px 49px);  
+  opacity: .7;  
+}  
+.stone::after {  
+  content: "";  
+  position: absolute;  
+  width: 32%;  
+  height: 9%;  
+  top: 13%;  
+  left: 20%;  
+  border-radius: 50%;  
+  background: #ffffff20;  
+  filter: blur(7px);  
+  transform: rotate(-22deg);  
+}  
+.stone.holding {  
+  filter: brightness(1.12);  
+  transform: rotate(-2deg) scale(.98);  
+}  
+.stone.amber {  
+  background: radial-gradient(ellipse at 30% 17%, #fff4bf, transparent 20%),  
+    linear-gradient(140deg, #f3cf83, #b8783b 60%, #673f29);  
+}  
+.stone.jade {  
+  background: radial-gradient(ellipse at 30% 17%, #d6f8bc, transparent 20%),  
+    linear-gradient(140deg, #a2d4a0, #438a69 60%, #214c3a);  
+}  
+.stone.obsidian {  
+  background: radial-gradient(ellipse at 30% 17%, #ffffff65, transparent 20%),  
+    linear-gradient(140deg, #777188, #282738 60%, #0b0c14);  
+}  
+.timer-ring {  
+  position: absolute;  
+  inset: 24%;  
+  border: 4px solid #f1d38b30;  
+  border-top-color: var(--gold);  
+  border-radius: 50%;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  transform: rotate(-25deg);  
+  pointer-events: none;  
+}  
+.timer {  
+  transform: rotate(25deg);  
+  color: #fff3d0;  
+  font-size: clamp(26px, 8vw, 38px);  
+  font-weight: 500;  
+  letter-spacing: 1px;  
+  text-shadow: 0 2px 12px #0008;  
+  font-variant-numeric: tabular-nums;  
+}  
+.hold-hint {  
+  position: absolute;  
+  top: 92%;  
+  width: 100%;  
+  text-align: center;  
+  font-size: 12px;  
+  color: #f1eedf;  
+  text-shadow: 0 2px 8px #000;  
+}  
+.reward {  
+  position: absolute;  
+  top: 71%;  
+  left: 50%;  
+  transform: translateX(-50%);  
+  white-space: nowrap;  
+  padding: 10px 16px;  
+  border-radius: 30px;  
+  font-size: 12px;  
+  color: var(--gold);  
+}  
+.progress-wrap {  
+  position: absolute;  
+  top: 81%;  
+  width: 68%;  
+  height: 5px;  
+  border-radius: 8px;  
+  background: #ffffff3a;  
+  overflow: hidden;  
+}  
+.progress {  
+  height: 100%;  
+  width: 0;  
+  background: linear-gradient(90deg, #c59c48, #ffedb3);  
+}  
+  
+/* Насекомые */  
+.bug {  
+  position: absolute;  
+  z-index: 4;  
+  font-size: 28px;  
+  filter: drop-shadow(0 3px 3px #0009);  
+  pointer-events: none;  
+  animation: bugmove 3s ease-in-out forwards;  
+}  
+@keyframes bugmove {  
+  0% { opacity: 0; transform: translate(0,0) rotate(-25deg) scale(.6); }  
+  12% { opacity: 1; }  
+  55% { transform: translate(30px,-14px) rotate(25deg) scale(1); }  
+  100% { opacity: 0; transform: translate(60px,10px) rotate(65deg) scale(.8); }  
+}  
+  
+/* iOS-подобные уведомления */  
+.notification-stack {  
+  position: absolute;  
+  z-index: 7;  
+  top: max(95px, calc(env(safe-area-inset-top) + 82px));  
+  left: 12px;  
+  right: 12px;  
+  display: flex;  
+  flex-direction: column;  
+  gap: 8px;  
+  pointer-events: none;  
+}  
+.notification {  
+  color: #171a18;  
+  background: rgba(245, 246, 239, .93);  
+  border: 1px solid #ffffffbb;  
+  border-radius: 18px;  
+  padding: 12px 14px;  
+  box-shadow: 0 8px 30px #0003;  
+  backdrop-filter: blur(24px);  
+  -webkit-backdrop-filter: blur(24px);  
+  animation: notif-in .35s ease-out;  
+}  
+.notification .ntop {  
+  display: flex;  
+  justify-content: space-between;  
+  gap: 10px;  
+  font-size: 11px;  
+  color: #626963;  
+}  
+.notification .nbody {  
+  margin-top: 5px;  
+  font-size: 14px;  
+  font-weight: 650;  
+}  
+.notification .nsub {  
+  margin-top: 3px;  
+  font-size: 12px;  
+  color: #444a45;  
+}  
+@keyframes notif-in {  
+  from { opacity: 0; transform: translateY(-18px) scale(.97); }  
+  to { opacity: 1; transform: translateY(0) scale(1); }  
+}  
+  
+/* Игровой экран входящего звонка */  
+.call-screen {  
+  display: none;  
+  position: absolute;  
+  inset: 0;  
+  z-index: 9;  
+  padding: max(60px, calc(env(safe-area-inset-top) + 45px)) 25px max(35px, env(safe-area-inset-bottom));  
+  background: linear-gradient(180deg, #394a55f5, #101b25f8 65%, #10151b);  
+  text-align: center;  
+  flex-direction: column;  
+  align-items: center;  
+}  
+.call-screen.show { display: flex; animation: notif-in .35s ease-out; }  
+.caller-avatar {  
+  margin-top: 16%;  
+  width: 110px;  
+  height: 110px;  
+  border-radius: 50%;  
+  display: grid;  
+  place-items: center;  
+  font-size: 48px;  
+  background: linear-gradient(135deg, #859b88, #253b31);  
+  border: 2px solid #ffffff40;  
+  box-shadow: 0 10px 40px #0004;  
+}  
+.caller-name { font-size: 29px; margin-top: 20px; font-weight: 400; }  
+.caller-label { margin-top: 8px; color: #c3d0d5; font-size: 14px; }  
+.call-actions {  
+  margin-top: auto;  
+  width: 100%;  
+  display: flex;  
+  justify-content: space-around;  
+  padding-bottom: 24px;  
+}  
+.call-action { display: flex; flex-direction: column; align-items: center; gap: 9px; color: white; font-size: 12px; }  
+.call-action button {  
+  width: 62px; height: 62px; border-radius: 50%; color: white; font-size: 24px;  
+}  
+.decline { background: #ee514b; transform: rotate(135deg); }  
+.accept { background: #35c96b; }  
+.call-note { margin-top: 14px; color: #d3dfdc; font-size: 11px; }  
+  
+/* Нижняя панель */  
+.bottom-panel {  
+  position: absolute;  
+  bottom: max(30px, calc(env(safe-area-inset-bottom) + 20px));  
+  left: 16px;  
+  right: 16px;  
+  padding: 15px;  
+  border-radius: 20px;  
+  text-align: center;  
+}  
+.bottom-panel strong { display: block; font-size: 15px; }  
+.bottom-panel span { display: block; color: #d0d8c8; font-size: 12px; margin-top: 5px; }  
+.shop-button {  
+  margin-top: 11px;  
+  border-radius: 12px;  
+  padding: 10px 15px;  
+  background: #e2c47d;  
+  color: #1b2a1e;  
+  font-weight: 750;  
+}  
+#adMessage {  
+  position: absolute;  
+  bottom: 5px;  
+  left: 0;  
+  right: 0;  
+  text-align: center;  
+  font-size: 10px;  
+  color: #ffffff8a;  
+}  
+@media (max-height: 700px) {  
+  .heading { top: 13%; }  
+  .stone-zone { top: 25%; height: 42%; }  
+  .stone { width: min(60vw, 260px); height: min(52vw, 220px); }  
+  .bottom-panel { bottom: max(20px, env(safe-area-inset-bottom)); }  
+}  
+</style>  
+</head>  
+  
+<body>  
+<div id="scene">  
+  <div class="canopy"></div>  
+  <div class="light-rays"></div>  
+  <div class="tree a"></div><div class="tree b"></div>  
+  <div class="tree c"></div><div class="tree d"></div>  
+  <div class="mist"></div>  
+  <div class="ground"></div>  
+  
+  <div class="statusbar">  
+    <span id="clock">09:41</span>  
+    <span>▮▮▮　◉　▰</span>  
+  </div>  
+  
+  <div class="top-ui">  
+    <div class="coins glass">🪙 <span id="coins">0</span></div>  
+    <div class="right-ui">  
+      <div class="daily glass">ДЕНЬ <strong id="daily">0/30</strong></div>  
+      <button class="ad-circle" id="adButton" aria-label="Реклама">ADS</button>  
+    </div>  
+  </div>  
+  
+  <div class="heading">  
+    <h1>Stone Meditation</h1>  
+    <p>Остановись. Почувствуй тишину.</p>  
+  </div>  
+  
+  <div class="stone-zone">  
+    <div class="stone-shadow"></div>  
+    <div class="stone" id="stone" aria-label="Удерживай камень">  
+      <div class="timer-ring">  
+        <div class="timer" id="timer">00:00</div>  
+      </div>  
+    </div>  
+    <div class="hold-hint" id="holdHint">Нажми и удерживай камень</div>  
+    <div class="reward glass" id="reward">🪙 +10 монет за минуту</div>  
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>  
+  </div>  
+  
+  <div class="notification-stack" id="notifications"></div>  
+  
+  <div class="bottom-panel glass">  
+    <strong id="bottomTitle">🌿 Отдыхай. Медитируй.</strong>  
+    <span id="bottomSub">Удерживай камень, чтобы начать</span>  
+    <button class="shop-button" id="shopButton">🪨 Сменить камень</button>  
+  </div>  
+  
+  <div id="adMessage">ADS · рекламный блок требует подключения SDK</div>  
+  
+  <div class="call-screen" id="callScreen">  
+    <div style="font-size:13px;color:#d4e0e3">входящий вызов</div>  
+    <div class="caller-avatar" id="callerAvatar">👤</div>  
+    <div class="caller-name" id="callerName">Неизвестный</div>  
+    <div class="caller-label">мобильный</div>  
+    <div class="call-actions">  
+      <div class="call-action">  
+        <button class="decline" id="declineCall">✆</button>  
+        Отклонить  
+      </div>  
+      <div class="call-action">  
+        <button class="accept" id="acceptCall">✆</button>  
+        Ответить  
+      </div>  
+    </div>  
+    <div class="call-note">Игровая имитация звонка</div>  
+  </div>  
+</div>  
+  
+<script>  
+"use strict";  
+  
+/* ======================================================  
+   ADSGRAM BLOCK ID — ТВОЙ ID УЖЕ ВСТАВЛЕН: 61897  
+   Для реальной рекламы подключи официальный AdsGram SDK  
+   и вызови его API согласно актуальной документации.  
+   Сам ID не запускает рекламу автоматически.  
+   ====================================================== */  
+const ADSGRAM_BLOCK_ID = "61897";  
+  
+const DAILY_LIMIT = 30 * 60;  
+const COINS_PER_MINUTE = 10;  
+const SAVE_KEY = "stone_meditation_max_v1";  
+  
+const $ = id => document.getElementById(id);  
+const todayKey = () => {  
+  const d = new Date();  
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;  
+};  
+  
+function freshSave() {  
+  return {  
+    coins: 0,  
+    totalSeconds: 0,  
+    dailySeconds: 0,  
+    date: todayKey(),  
+    stone: "slate",  
+    owned: ["slate"]  
+  };  
+}  
+  
+function loadSave() {  
+  try {  
+    const saved = JSON.parse(localStorage.getItem(SAVE_KEY));  
+    if (!saved) return freshSave();  
+    const result = {...freshSave(), ...saved};  
+    if (!Array.isArray(result.owned)) result.owned = ["slate"];  
+    if (result.date !== todayKey()) {  
+      result.date = todayKey();  
+      result.dailySeconds = 0;  
+    }  
+    return result;  
+  } catch {  
+    return freshSave();  
+  }  
+}  
+  
+let data = loadSave();  
+let holding = false;  
+let sessionSeconds = 0;  
+let lastFrame = 0;  
+let paidMinutes = Math.floor(data.totalSeconds / 60);  
+let distractionTimer = null;  
+let callTimer = null;  
+let notificationTimer = null;  
+let callTimeout = null;  
+let activeCall = false;  
+  
+const stoneSkins = [  
+  {id:"slate", name:"Сланец", price:0, color:"#69756b"},  
+  {id:"amber", name:"Янтарь", price:60, color:"#b8783b"},  
+  {id:"jade", name:"Нефрит", price:150, color:"#438a69"},  
+  {id:"obsidian", name:"Обсидиан", price:300, color:"#282738"}  
+];  
+  
+const notificationExamples = [  
+  {app:"Messages", title:"Новое сообщение", sub:"Ты свободен сегодня вечером?"},  
+  {app:"Почта", title:"Новое письмо", sub:"У вас есть непрочитанное сообщение."},  
+  {app:"Напоминания", title:"Напоминание", sub:"Не забудьте проверить свои дела."},  
+  {app:"Сообщения", title:"Новое сообщение", sub:"Привет! Как твои дела?"},  
+  {app:"Календарь", title:"Событие скоро начнётся", sub:"Не забудьте проверить расписание."},  
+  {app:"Система", title:"Новое уведомление", sub:"Посмотрите, что нового."}  
+];  
+  
+function saveGame() {  
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); }  
+  catch (e) { console.warn("Не удалось сохранить игру", e); }  
+}  
+  
+function syncDate() {  
+  if (data.date !== todayKey()) {  
+    data.date = todayKey();  
+    data.dailySeconds = 0;  
+    saveGame();  
+  }  
+}  
+  
+function remaining() {  
+  return Math.max(0, DAILY_LIMIT - data.dailySeconds);  
+}  
+  
+function fmt(seconds) {  
+  seconds = Math.max(0, Math.floor(seconds));  
+  return String(Math.floor(seconds / 60)).padStart(2,"0") + ":" +  
+         String(seconds % 60).padStart(2,"0");  
+}  
+  
+function render() {  
+  syncDate();  
+  $("coins").textContent = data.coins;  
+  $("daily").textContent = `${Math.floor(data.dailySeconds / 60)}/30`;  
+  $("timer").textContent = fmt(sessionSeconds);  
+  $("progress").style.width = ((sessionSeconds % 60) / 60 * 100) + "%";  
+  $("stone").className = "stone " + data.stone + (holding ? " holding" : "");  
+  
+  if (remaining() <= 0) {  
+    $("holdHint").textContent = "Лимит на сегодня исчерпан";  
+    $("bottomSub").textContent = "Возвращайся завтра 🌙";  
+  } else if (holding) {  
+    $("holdHint").textContent = "Не отвлекайся… дыши глубже";  
+    $("bottomSub").textContent = "Сохраняй спокойствие";  
+  } else {  
+    $("holdHint").textContent = "Нажми и удерживай камень";  
+    $("bottomSub").textContent = "Удерживай камень, чтобы начать";  
+  }  
+}  
+  
+function startHold(event) {  
+  if (event.button !== undefined && event.button !== 0) return;  
+  if (activeCall) return;  
+  syncDate();  
+  
+  if (remaining() <= 0) {  
+    showNotice("На сегодня лимит 30 минут исчерпан.", "Stone Meditation");  
+    render();  
+    return;  
+  }  
+  if (holding) return;  
+  
+  holding = true;  
+  lastFrame = performance.now();  
+  
+  try {  
+    if (event.pointerId !== undefined) {  
+      $("stone").setPointerCapture(event.pointerId);  
+    }  
+  } catch {}  
+  
+  $("bottomTitle").textContent = "🌿 Сохраняй спокойствие";  
+  startDistractions();  
+  render();  
+  requestAnimationFrame(tick);  
+}  
+  
+function stopHold() {  
+  if (!holding) return;  
+  holding = false;  
+  stopDistractions();  
+  $("bottomTitle").textContent = "🌿 Отдыхай. Медитируй.";  
+  render();  
+  saveGame();  
+}  
+  
+function tick(now) {  
+  if (!holding) return;  
+  
+  syncDate();  
+  const delta = Math.min((now - lastFrame) / 1000, .25);  
+  lastFrame = now;  
+  
+  const increment = Math.min(delta, remaining());  
+  if (increment > 0) {  
+    sessionSeconds += increment;  
+    data.dailySeconds += increment;  
+    data.totalSeconds += increment;  
+  
+    const minutes = Math.floor(data.totalSeconds / 60);  
+    if (minutes > paidMinutes) {  
+      const earned = (minutes - paidMinutes) * COINS_PER_MINUTE;  
+      paidMinutes = minutes;  
+      data.coins += earned;  
+      showNotice(`+${earned} монет за медитацию ✨`, "Stone Meditation");  
+      $("reward").textContent = `🪙 +${COINS_PER_MINUTE} монет за минуту`;  
+      saveGame();  
+    }  
+  
+    if (Math.floor(data.dailySeconds) !== Math.floor(data.dailySeconds - increment)) {  
+      saveGame();  
+    }  
+  }  
+  
+  render();  
+  
+  if (remaining() <= 0) {  
+    stopHold();  
+    showNotice("Ты достиг дневного лимита в 30 минут.", "Stone Meditation");  
+    return;  
+  }  
+  
+  requestAnimationFrame(tick);  
+}  
+  
+function showNotice(message, app = "Уведомление") {  
+  const stack = $("notifications");  
+  const el = document.createElement("div");  
+  el.className = "notification";  
+  
+  const top = document.createElement("div");  
+  top.className = "ntop";  
+  const appName = document.createElement("span");  
+  appName.textContent = app;  
+  const time = document.createElement("span");  
+  time.textContent = "сейчас";  
+  top.append(appName, time);  
+  
+  const title = document.createElement("div");  
+  title.className = "nbody";  
+  title.textContent = message;  
+  
+  const sub = document.createElement("div");  
+  sub.className = "nsub";  
+  sub.textContent = "Stone Meditation";  
+  
+  el.append(top, title, sub);  
+  stack.prepend(el);  
+  
+  while (stack.children.length > 2) {  
+    stack.lastElementChild.remove();  
+  }  
+  setTimeout(() => el.remove(), 3200);  
+}  
+  
+function randomBug() {  
+  if (!holding) return;  
+  const bugs = ["🕷️", "🪰", "🐛", "🪱", "🪲", "🦟"];  
+  const el = document.createElement("div");  
+  el.className = "bug";  
+  el.textContent = bugs[Math.floor(Math.random() * bugs.length)];  
+  el.style.left = Math.max(4, Math.random() * 88) + "%";  
+  el.style.top = (22 + Math.random() * 54) + "%";  
+  $("scene").appendChild(el);  
+  setTimeout(() => el.remove(), 3100);  
+}  
+  
+function startDistractions() {  
+  stopDistractions();  
+  
+  // Игровые уведомления появляются примерно каждые 3 секунды.  
+  notificationTimer = setInterval(() => {  
+    if (!holding || activeCall) return;  
+    const item = notificationExamples[Math.floor(Math.random() * notificationExamples.length)];  
+    showNotice(item.title, item.app);  
+  }, 3000);  
+  
+  distractionTimer = setInterval(() => {  
+    if (holding && !activeCall) randomBug();  
+  }, 3000);  
+  
+  // Имитация звонка с небольшим случайным интервалом.  
+  scheduleCall();  
+}  
+  
+function stopDistractions() {  
+  clearInterval(notificationTimer);  
+  clearInterval(distractionTimer);  
+  clearTimeout(callTimer);  
+  clearTimeout(callTimeout);  
+  notificationTimer = null;  
+  distractionTimer = null;  
+  callTimer = null;  
+  callTimeout = null;  
+  document.querySelectorAll(".bug").forEach(el => el.remove());  
+  if (activeCall) closeCall(false);  
+}  
+  
+function scheduleCall() {  
+  clearTimeout(callTimer);  
+  if (!holding || activeCall) return;  
+  
+  callTimer = setTimeout(() => {  
+    if (holding && !activeCall) openCall();  
+    else scheduleCall();  
+  }, 12000 + Math.random() * 10000);  
+}  
+  
+function openCall() {  
+  if (!holding || activeCall) return;  
+  
+  activeCall = true;  
+  stopHold();  
+  activeCall = true;  
+  
+  const callers = [  
+    {name:"Неизвестный номер", icon:"👤"},  
+    {name:"Мама", icon:"👩"},  
+    {name:"Доставка", icon:"🛵"},  
+    {name:"Спам", icon:"☎️"}  
+  ];  
+  const caller = callers[Math.floor(Math.random() * callers.length)];  
+  
+  $("callerName").textContent = caller.name;  
+  $("callerAvatar").textContent = caller.icon;  
+  $("callScreen").classList.add("show");  
+  
+  // Вызов автоматически заканчивается через 10 секунд.  
+  callTimeout = setTimeout(() => closeCall(true), 10000);  
+}  
+  
+function closeCall(resume) {  
+  clearTimeout(callTimeout);  
+  activeCall = false;  
+  $("callScreen").classList.remove("show");  
+  
+  if (resume) {  
+    showNotice("Звонок завершён", "Телефон");  
+    if (remaining() > 0) {  
+      showNotice("Нажми на камень, чтобы продолжить.", "Stone Meditation");  
+    }  
+  }  
+}  
+  
+function openShop() {  
+  const list = stoneSkins.map(s => {  
+    const owned = data.owned.includes(s.id);  
+    const selected = data.stone === s.id;  
+    return `${s.name} — ${s.price === 0 ? "бесплатно" : s.price + " монет"}${selected ? " (выбран)" : owned ? " (есть)" : ""}`;  
+  }).join("\n");  
+  
+  const choice = prompt(  
+    "МАГАЗИН КАМНЕЙ\n\n" + list +  
+    "\n\nВведи название камня: Сланец, Янтарь, Нефрит или Обсидиан"  
+  );  
+  if (!choice) return;  
+  
+  const normalized = choice.trim().toLowerCase();  
+  const stone = stoneSkins.find(s =>  
+    s.name.toLowerCase() === normalized || s.id === normalized  
+  );  
+  if (!stone) {  
+    showNotice("Такого камня нет в магазине.", "Магазин");  
+    return;  
+  }  
+  
+  if (data.owned.includes(stone.id)) {  
+    data.stone = stone.id;  
+    saveGame();  
+    render();  
+    showNotice("Камень изменён.", "Магазин");  
+  } else if (data.coins >= stone.price) {  
+    data.coins -= stone.price;  
+    data.owned.push(stone.id);  
+    data.stone = stone.id;  
+    saveGame();  
+    render();  
+    showNotice("Новый камень разблокирован!", "Магазин");  
+  } else {  
+    showNotice("Недостаточно монет.", "Магазин");  
+  }  
+}  
+  
+function updateClock() {  
+  $("clock").textContent = new Date().toLocaleTimeString("ru-RU", {  
+    hour: "2-digit", minute: "2-digit"  
+  });  
+}  
+  
+$("stone").addEventListener("pointerdown", startHold);  
+$("stone").addEventListener("pointerup", stopHold);  
+$("stone").addEventListener("pointercancel", stopHold);  
+$("stone").addEventListener("lostpointercapture", stopHold);  
+$("stone").addEventListener("contextmenu", e => e.preventDefault());  
+window.addEventListener("pointerup", stopHold);  
+window.addEventListener("blur", stopHold);  
+document.addEventListener("visibilitychange", () => {  
+  if (document.hidden) stopHold();  
+});  
+  
+$("declineCall").addEventListener("click", () => closeCall(true));  
+$("acceptCall").addEventListener("click", () => {  
+  closeCall(true);  
+  showNotice("Это была игровая имитация звонка.", "Телефон");  
+});  
+$("shopButton").addEventListener("click", openShop);  
+  
+$("adButton").addEventListener("click", () => {  
+  showNotice("AdsGram Block ID: " + ADSGRAM_BLOCK_ID, "Реклама");  
+  $("adMessage").textContent = "AdsGram ID: " + ADSGRAM_BLOCK_ID + " · SDK нужно подключить";  
+});  
+  
+updateClock();  
+setInterval(updateClock, 15000);  
+render();  
+saveGame();  
+</script>  
+</body>  
+</html>  
