@@ -5,10 +5,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Найди покой</title>
+  
+  <!-- Скрипт Telegram (обязательно) -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
-    /* Ваши стили */
-    body { font-family: sans-serif; text-align: center; padding: 20px; }
-    .ad-block { border: 1px dashed #ccc; padding: 10px; margin: 20px auto; max-width: 300px; cursor: pointer; }
+    body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; }
+    .stone { font-size: 60px; cursor: pointer; user-select: none; }
+    .ad-block { border: 1px dashed #aaa; padding: 10px; margin: 20px auto; max-width: 300px; cursor: pointer; background: #fff; }
+    button { padding: 10px 15px; margin: 5px; font-size: 16px; }
   </style>
 </head>
 <body>
@@ -18,7 +23,7 @@
 
   <div>
     <p>Нажми и удерживай камень</p>
-    <div style="font-size: 50px;">🪨</div>
+    <div class="stone">🪨</div>
     <p>00:00</p>
   </div>
 
@@ -29,7 +34,7 @@
     <button>↻ Начать заново</button>
   </div>
 
-  <!-- Рекламный блок, при нажатии на который будет вызываться реклама -->
+  <!-- Рекламный блок -->
   <div class="ad-block" onclick="showAdsgramAd()">
     <strong>ADVERTISEMENT · ADSGRAM</strong><br>
     <span>Нажми, чтобы посмотреть рекламу и получить монеты</span>
@@ -41,20 +46,17 @@
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   
   <script>
-    // 1. ВСТАВЬТЕ ВАШ ID СЮДА
+    // Ваш ID уже вставлен
     const ADSGRAM_BLOCK_ID = "61897"; 
 
-    // 2. Инициализация
+    // Инициализация
     const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
 
-    // 3. Функция показа рекламы
+    // Функция показа рекламы
     function showAdsgramAd() {
       AdController.show().then((result) => {
-        // Успешный просмотр
         alert("Спасибо! Вы посмотрели рекламу.");
-        // Здесь можно добавить логику начисления монет
       }).catch((err) => {
-        // Ошибка или пропуск
         console.log("Реклама пропущена или ошибка:", err);
       });
     }
