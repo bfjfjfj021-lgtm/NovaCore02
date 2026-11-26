@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -38,7 +39,8 @@ const tg = window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
 let data={energy:0,taps:0,power:1,upgradeLevel:1,boostUntil:0};
 try{const saved=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");if(saved&&typeof saved==="object")data={...data,...saved};}catch(e){}
-let adController=null;	ry{if(window.Adsgram && ADSGRAM_BLOCK_ID!=="PASTE_YOUR_BLOCK_ID_HERE")adController=window.Adsgram.init({blockId:ADSGRAM_BLOCK_ID,debug:false});}catch(e){console.warn("AdsGram init error",e)}
+let adController=null;
+try{if(window.Adsgram && ADSGRAM_BLOCK_ID!=="PASTE_YOUR_BLOCK_ID_HERE")adController=window.Adsgram.init({blockId:ADSGRAM_BLOCK_ID,debug:false});}catch(e){console.warn("AdsGram init error",e)}
 const $=id=>document.getElementById(id);let toastTimer;
 function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(data))}catch(e){}}
 function haptic(type="light"){try{if(tg?.HapticFeedback){tg.HapticFeedback.impactOccurred(type);return}}catch(e){}try{navigator.vibrate?.(type==="heavy"?45:20)}catch(e){}}
