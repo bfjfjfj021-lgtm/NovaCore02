@@ -6,53 +6,108 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Найди покой</title>
   
-  <!-- Скрипт Telegram (обязательно) -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 20px; background-color: #f9f9f9; }
-    .stone { font-size: 60px; cursor: pointer; user-select: none; }
-    .ad-block { border: 1px dashed #aaa; padding: 10px; margin: 20px auto; max-width: 300px; cursor: pointer; background: #fff; }
-    button { padding: 10px 15px; margin: 5px; font-size: 16px; }
+    body { 
+      font-family: sans-serif; 
+      text-align: center; 
+      margin: 0;
+      padding: 20px; 
+      color: #ffffff;
+      /* Красивый фон леса */
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1080&q=80') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* Верхняя панель */
+    .top-bar {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 8px 15px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+    }
+
+    .coin-counter {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .ad-circle {
+      width: 35px;
+      height: 35px;
+      background: #ff4b2b;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255,75,43,0.5);
+      transition: transform 0.2s;
+    }
+
+    .ad-circle:active { transform: scale(0.9); }
+
+    .content { margin-top: 80px; }
+    .stone { font-size: 80px; cursor: pointer; user-select: none; margin: 20px 0; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
+    
+    button { 
+      padding: 12px 20px; 
+      margin: 5px; 
+      font-size: 16px; 
+      border: none;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(5px);
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-  <h2>Найди покой</h2>
-  <p>Остановись. Дыши. Почувствуй момент.</p>
-
-  <div>
-    <p>Нажми и удерживай камень</p>
-    <div class="stone">🪨</div>
-    <p>00:00</p>
+  <!-- Верхняя панель с монетами и рекламой -->
+  <div class="top-bar">
+    <div class="coin-counter">🪙 0</div>
+    <div class="ad-circle" onclick="showAdsgramAd()">ADS</div>
   </div>
 
-  <p>10 монет за каждую полную минуту</p>
+  <div class="content">
+    <h2>Найди покой</h2>
+    <p>Остановись. Дыши. Почувствуй момент.</p>
 
-  <div>
-    <button>🪨 Магазин камней</button>
-    <button>↻ Начать заново</button>
+    <div>
+      <p>Нажми и удерживай камень</p>
+      <div class="stone">🪨</div>
+      <p>00:00</p>
+    </div>
+
+    <p>10 монет за каждую полную минуту</p>
+
+    <div>
+      <button>🪨 Магазин камней</button>
+      <button>↻ Начать заново</button>
+    </div>
+
+    <p style="margin-top: 40px; opacity: 0.7;">Сегодня: 0/30 минут · Прогресс сохраняется</p>
   </div>
 
-  <!-- Рекламный блок -->
-  <div class="ad-block" onclick="showAdsgramAd()">
-    <strong>ADVERTISEMENT · ADSGRAM</strong><br>
-    <span>Нажми, чтобы посмотреть рекламу и получить монеты</span>
-  </div>
-
-  <p>Сегодня: 0/30 минут · Прогресс сохраняется</p>
-
-  <!-- Подключаем SDK Adsgram -->
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   
   <script>
-    // Ваш ID уже вставлен
     const ADSGRAM_BLOCK_ID = "61897"; 
-
-    // Инициализация
     const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
 
-    // Функция показа рекламы
     function showAdsgramAd() {
       AdController.show().then((result) => {
         alert("Спасибо! Вы посмотрели рекламу.");
