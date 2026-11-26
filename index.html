@@ -1,82 +1,390 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#070708"><title>PUPPET — The Broken Body</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<!-- AdsGram legacy Rewarded SDK. Set your approved blockId in CONFIG below. -->
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#10120f">
+<title>Stone Meditation</title>
 <style>
-:root{color-scheme:dark;--gold:#c59b5b;--red:#9d3333;--panel:rgba(8,8,10,.88)}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050506;color:#eee;font-family:Georgia,'Times New Roman',serif;touch-action:none}#game{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.7) 100%);z-index:2}.grain{position:fixed;inset:0;pointer-events:none;z-index:3;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}.top{position:fixed;z-index:5;top:env(safe-area-inset-top,8px);left:0;right:0;padding:12px 14px;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}.brand{font-size:13px;letter-spacing:4px;color:#d8c6a5;text-shadow:0 2px 8px #000}.worldtag{font:11px Arial,sans-serif;letter-spacing:2px;color:#c5b8a2;margin-top:5px}.adcounter{pointer-events:auto;background:rgba(0,0,0,.7);border:1px solid #826b49;border-radius:20px;padding:8px 12px;font:12px Arial,sans-serif;color:#f1dfbf}.adcounter b{color:#e6b96f}.bottom{position:fixed;z-index:5;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none}.hintbtn,.menuBtn{pointer-events:auto;border:1px solid #826b49;background:rgba(8,7,8,.88);color:#e6d5b8;border-radius:7px;padding:11px 13px;font:11px Arial,sans-serif;letter-spacing:1px}.hintbtn:disabled{opacity:.45}.controls{display:flex;gap:7px;pointer-events:auto}.limb{width:53px;height:53px;border-radius:50%;border:1px solid #9a8058;background:rgba(13,11,10,.78);color:#ead9bb;font:10px Arial,sans-serif;touch-action:none;user-select:none}.limb.active{background:#75552f;box-shadow:0 0 18px #b58b4d}.overlay{position:fixed;z-index:10;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at center,rgba(23,18,16,.68),rgba(0,0,0,.95));text-align:center}.hidden{display:none!important}.card{width:min(440px,100%);padding:28px 22px;background:rgba(7,7,8,.82);border:1px solid rgba(173,139,88,.42);box-shadow:0 20px 70px #000}.title{font-size:clamp(42px,13vw,68px);letter-spacing:8px;color:#d7c3a0;text-shadow:0 4px 20px #000;margin:0 0 8px}.subtitle{font:10px Arial,sans-serif;letter-spacing:4px;color:#9e8d75;margin-bottom:26px}.desc{font:14px/1.6 Arial,sans-serif;color:#b9b0a2;margin:16px 0 22px}.action{width:100%;padding:15px;margin-top:9px;border:1px solid #9b7849;background:linear-gradient(#3a2b20,#17110e);color:#f2dfbd;font:12px Arial,sans-serif;letter-spacing:3px}.action:active{transform:scale(.98)}.small{font:10px/1.5 Arial,sans-serif;color:#81796d;margin-top:14px}.toast{position:fixed;z-index:8;left:50%;top:22%;transform:translateX(-50%);max-width:85%;padding:12px 16px;background:rgba(0,0,0,.9);border:1px solid #947447;color:#e8d5b3;font:13px/1.4 Arial,sans-serif;text-align:center;opacity:0;transition:opacity .25s;pointer-events:none}.toast.show{opacity:1}.progress{font:11px Arial,sans-serif;color:#c7b99f;letter-spacing:1px;margin:10px}.aim{position:fixed;z-index:4;left:50%;top:48%;width:7px;height:7px;border:1px solid rgba(230,205,160,.55);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}.mapnote{font:12px/1.5 Arial,sans-serif;color:#c6b99f}
-@media (max-height:650px){.limb{width:46px;height:46px}.card{padding:18px}.title{font-size:42px}}
+:root{--gold:#e5c77a;--cream:#f4ead1;--muted:#a9aa9e;--panel:rgba(22,25,21,.78);--line:rgba(238,224,184,.16)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--cream);background:#10120f}
+body{min-height:100svh;overflow:hidden;touch-action:pan-y}
+button{font:inherit;color:inherit;cursor:pointer}
+.scene{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;background:
+ radial-gradient(ellipse at 50% 38%,rgba(142,137,106,.17),transparent 30%),
+ radial-gradient(ellipse at 20% 5%,rgba(104,121,85,.17),transparent 35%),
+ linear-gradient(165deg,#262a21 0%,#171a15 43%,#0b0d0b 100%)}
+.scene:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.26;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");pointer-events:none}
+.scene:after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 25%,rgba(0,0,0,.62) 100%)}
+.topbar{position:absolute;z-index:5;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:calc(16px + env(safe-area-inset-top)) 18px 12px}
+.brand{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#d9d4bf}.brand b{display:block;color:var(--cream);font-weight:600;font-size:15px;letter-spacing:.15em;margin-top:3px}
+.coins{border:1px solid var(--line);border-radius:999px;background:rgba(12,14,11,.62);padding:9px 11px;display:flex;align-items:center;gap:7px;font-size:12px;box-shadow:0 8px 30px #0003;white-space:nowrap}
+.daily-counter{border-color:rgba(229,199,122,.24);gap:6px}
+@media(max-width:390px){.topbar{padding-left:11px;padding-right:11px}.brand{font-size:9px}.brand b{font-size:12px}.coins{padding:8px 8px;font-size:11px;gap:5px}}
+.coin-icon{color:var(--gold);font-size:16px}
+.ad-button{position:absolute;z-index:7;right:17px;top:91px;border:1px solid rgba(229,199,122,.35);background:rgba(31,32,24,.82);border-radius:13px;padding:10px 12px;display:flex;gap:8px;align-items:center;font-size:11px;box-shadow:0 8px 25px #0003;backdrop-filter:blur(12px)}
+.ad-button .play{color:var(--gold);font-size:14px}.ad-button:active{transform:scale(.97)}
+.center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:100px 18px 148px;text-align:center}
+.eyebrow{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#aaa993;margin-bottom:12px}
+.timer{font-variant-numeric:tabular-nums;font-weight:300;font-size:clamp(38px,11vw,57px);letter-spacing:.06em;line-height:1;margin-bottom:9px;text-shadow:0 3px 25px #0006}
+.hint{font-size:12px;letter-spacing:.04em;color:#a6a99b;min-height:18px}
+.stone-stage{width:min(78vw,330px);height:min(68vw,270px);position:relative;display:grid;place-items:center;margin:15px 0 16px;touch-action:none;user-select:none;-webkit-user-select:none}
+.stone-shadow{position:absolute;width:72%;height:28%;bottom:13%;border-radius:50%;background:#000b;filter:blur(22px);transform:translateY(17px) scale(1.05)}
+.stone{position:relative;width:76%;height:67%;border-radius:48% 52% 43% 57% / 43% 40% 60% 57%;transform:rotate(-8deg);overflow:hidden;
+ background:
+ radial-gradient(ellipse at 27% 18%,rgba(255,255,255,.55),transparent 18%),
+ radial-gradient(ellipse at 67% 26%,rgba(212,207,181,.28),transparent 28%),
+ radial-gradient(ellipse at 36% 69%,rgba(13,17,14,.62),transparent 32%),
+ radial-gradient(ellipse at 75% 75%,rgba(0,0,0,.65),transparent 28%),
+ linear-gradient(135deg,#999783 0%,#65695d 20%,#444a41 48%,#252b25 72%,#151a16 100%);
+ box-shadow:inset 8px 9px 15px #ffffff38,inset -15px -18px 24px #0009,0 20px 35px #0008,0 2px 2px #c7c4a644}
+.stone:before{content:"";position:absolute;inset:0;border-radius:inherit;background:
+ repeating-radial-gradient(ellipse at 32% 28%,transparent 0 5px,rgba(13,17,13,.14) 6px,transparent 8px 13px),
+ repeating-linear-gradient(22deg,transparent 0 17px,rgba(225,222,193,.045) 18px,transparent 19px 31px),
+ url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.055' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");mix-blend-mode:overlay;opacity:.8}
+.stone:after{content:"";position:absolute;inset:3% 6% 6% 4%;border-radius:inherit;background:linear-gradient(130deg,#ffffff22,transparent 32%,transparent 64%,#0005);filter:blur(2px)}
+.stone-stage.holding .stone{filter:brightness(1.08);box-shadow:inset 8px 9px 15px #ffffff38,inset -15px -18px 24px #0009,0 0 40px #d9d0a11c}
+.stone-stage.holding:after{content:"";position:absolute;width:88%;height:78%;border:1px solid #e5c77a45;border-radius:50%;animation:pulse 2.8s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.88);opacity:0}40%{opacity:.55}100%{transform:scale(1.1);opacity:0}}
+.progress-wrap{width:min(70vw,260px);margin-top:5px}
+.progress-line{height:3px;background:#ffffff16;border-radius:9px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#9d8951,var(--gold));border-radius:9px;transition:width .12s linear}
+.progress-label{display:flex;justify-content:space-between;color:#8f9385;font-size:10px;margin-top:8px;letter-spacing:.06em}
+.bottom{position:absolute;left:0;right:0;bottom:0;padding:14px 18px calc(17px + env(safe-area-inset-bottom));background:linear-gradient(0deg,rgba(6,8,6,.94),rgba(8,10,8,.64) 68%,transparent);z-index:4}
+.bottom-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.bottom-title{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#d6d1bc}
+.current-stone{font-size:11px;color:#929687}
+.shop-toggle{width:100%;height:46px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.055);display:flex;align-items:center;justify-content:center;gap:10px;color:#ddd8c5;font-size:12px;letter-spacing:.07em}
+.slider-track{width:38px;height:4px;border-radius:9px;background:#777b6d;position:relative}
+.slider-track:after{content:"";position:absolute;right:-1px;top:-4px;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px #e5c77a55}
+.shop{position:absolute;z-index:10;left:0;right:0;bottom:0;padding:12px 18px calc(18px + env(safe-area-inset-bottom));background:rgba(17,20,16,.97);border-top:1px solid var(--line);border-radius:24px 24px 0 0;backdrop-filter:blur(24px);transform:translateY(110%);transition:transform .32s cubic-bezier(.2,.8,.2,1);max-height:68svh;overflow:auto}
+.shop.open{transform:translateY(0)}
+.grabber{width:38px;height:4px;border-radius:4px;background:#74786a;margin:0 auto 16px}
+.shop-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.shop-head h2{margin:0;font-size:17px;font-weight:500;letter-spacing:.04em}
+.close{border:1px solid var(--line);background:#ffffff09;border-radius:50%;width:32px;height:32px;font-size:17px}
+.shop-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stone-card{padding:12px;border:1px solid var(--line);border-radius:16px;background:#ffffff06;text-align:left;min-width:0}
+.stone-card.selected{border-color:#d6bb73a8;background:#d6bb730d}
+.mini-stone{height:76px;display:grid;place-items:center;margin-bottom:8px;background:radial-gradient(ellipse,#ffffff0b,transparent 65%)}
+.mini-rock{width:78px;height:51px;border-radius:48% 52% 43% 57%;transform:rotate(-8deg);box-shadow:inset 5px 5px 10px #ffffff3b,inset -7px -8px 12px #0008,0 8px 12px #0007}
+.rock-slate{background:linear-gradient(135deg,#999d99,#404742 55%,#202522)}
+.rock-amber{background:linear-gradient(135deg,#e1b979,#93633d 52%,#3e2b20)}
+.rock-jade{background:linear-gradient(135deg,#91b9a0,#47745d 52%,#203b30)}
+.rock-obsidian{background:linear-gradient(135deg,#777c83,#252a31 48%,#090b0e)}
+.card-name{font-size:12px;margin-bottom:5px}.card-price{font-size:11px;color:var(--gold)}.card-action{font-size:10px;color:#9da293;margin-top:7px}
+.toast{position:absolute;z-index:20;left:50%;top:26%;transform:translate(-50%,-8px);padding:11px 15px;border:1px solid var(--line);border-radius:12px;background:#171a15ee;color:#f0e5c7;font-size:12px;opacity:0;pointer-events:none;transition:all .22s;white-space:nowrap;box-shadow:0 12px 35px #0005}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.ad-note{font-size:10px;color:#828777;line-height:1.45;margin:12px 2px 0}
+#confetti{position:absolute;inset:0;pointer-events:none}
+.distraction-layer{position:absolute;inset:0;z-index:6;pointer-events:none;overflow:hidden}
+.fake-notification{position:absolute;top:calc(104px + env(safe-area-inset-top));left:50%;width:min(330px,calc(100% - 34px));padding:12px 14px;border:1px solid rgba(255,255,255,.13);border-radius:17px;background:rgba(31,34,29,.94);box-shadow:0 16px 45px #0008;backdrop-filter:blur(18px);display:flex;align-items:flex-start;gap:11px;opacity:0;transform:translate(-50%,-20px) scale(.96);transition:opacity .28s,transform .28s}
+.fake-notification.show{opacity:1;transform:translate(-50%,0) scale(1)}
+.notif-icon{width:37px;height:37px;flex:none;border-radius:11px;display:grid;place-items:center;background:#d9bd7040;font-size:19px}
+.notif-copy{flex:1;min-width:0;text-align:left}
+.notif-head{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:650;color:#f1eddf}
+.notif-time{font-size:9px;color:#a6aa9d;font-weight:400;white-space:nowrap}
+.notif-body{font-size:11px;line-height:1.4;color:#c3c6b8;margin-top:4px}
+.fake-call{position:absolute;z-index:8;inset:0;display:flex;align-items:flex-start;justify-content:center;padding:calc(155px + env(safe-area-inset-top)) 20px 0;background:linear-gradient(180deg,rgba(8,10,8,.28),transparent 60%);opacity:0;visibility:hidden;transition:opacity .3s;pointer-events:none}
+.fake-call.show{opacity:1;visibility:visible}
+.call-card{width:min(310px,100%);border:1px solid rgba(255,255,255,.13);border-radius:24px;padding:22px;background:rgba(25,28,23,.95);box-shadow:0 20px 60px #0009;backdrop-filter:blur(20px);text-align:center;transform:translateY(-8px);transition:transform .3s}
+.fake-call.show .call-card{transform:translateY(0)}
+.call-avatar{width:62px;height:62px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;background:linear-gradient(135deg,#737d65,#343d30);font-size:26px;box-shadow:0 0 0 7px #ffffff08}
+.call-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#b1b5a7}
+.call-name{font-size:20px;margin:8px 0 4px}.call-sub{font-size:11px;color:#a2a696}
+.call-actions{display:flex;justify-content:space-around;margin-top:20px}
+.call-action{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:10px;color:#b9bdaf}
+.call-circle{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;font-size:18px;background:#ffffff12}
+.crawl-bug{position:absolute;width:27px;height:20px;filter:drop-shadow(0 5px 5px #0009);animation:bugCrawl 13s linear forwards;opacity:.92}
+.crawl-bug:before{content:"";position:absolute;left:6px;top:4px;width:16px;height:13px;border-radius:48% 52% 45% 55%;background:radial-gradient(ellipse at 30% 20%,#858574 0,#34392f 32%,#10130f 76%);border:1px solid #99977d66}
+.crawl-bug:after{content:"";position:absolute;left:12px;top:1px;width:6px;height:6px;border-radius:50%;background:#272c23;box-shadow:-7px 4px 0 -2px #b2ad8d,7px 4px 0 -2px #b2ad8d,-3px 14px 0 -2px #b2ad8d,5px 14px 0 -2px #b2ad8d}
+@keyframes bugCrawl{0%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(22px,18px) rotate(25deg)}50%{transform:translate(-8px,36px) rotate(-18deg)}75%{transform:translate(18px,55px) rotate(22deg)}100%{transform:translate(-10px,90px) rotate(-12deg);opacity:0}}
+@media(min-width:700px){.center{padding-bottom:150px}.stone-stage{width:330px;height:270px}.bottom{left:50%;right:auto;width:min(460px,100%);transform:translateX(-50%);background:linear-gradient(0deg,rgba(6,8,6,.96),rgba(8,10,8,.4));border-radius:20px 20px 0 0}.topbar{padding-left:30px;padding-right:30px}.ad-button{right:30px}}
 </style>
 </head>
-<body><div id="game"></div><div class="vignette"></div><div class="grain"></div><div class="aim"></div>
-<div class="top"><div><div class="brand">P U P P E T</div><div class="worldtag" id="worldName">THE BROKEN BODY</div></div><div class="adcounter">ПОДСКАЗКИ <b id="adCount">0/30</b></div></div>
-<div class="bottom"><button class="hintbtn" id="hintBtn">▶ ПОДСКАЗКА · РЕКЛАМА</button><div class="controls"><button class="limb" data-limb="leftLeg">ЛЕВАЯ<br>НОГА</button><button class="limb" data-limb="rightLeg">ПРАВАЯ<br>НОГА</button><button class="limb" data-limb="leftArm">ЛЕВАЯ<br>РУКА</button><button class="limb" data-limb="rightArm">ПРАВАЯ<br>РУКА</button></div></div>
-<div class="toast" id="toast"></div>
-<div class="overlay" id="menu"><div class="card"><h1 class="title">PUPPET</h1><div class="subtitle">THE BROKEN BODY</div><div class="desc">Ты — разобранная марионетка.<br>Найди четыре части этого мира.<br>Восстанови себя. Найди выход.</div><button class="action" id="startBtn">НАЧАТЬ</button><div class="small">Управляй четырьмя конечностями отдельно.<br>Коснись светящейся детали, чтобы подобрать её.</div></div></div>
-<div class="overlay hidden" id="endWorld"><div class="card"><h2 id="endTitle" style="font-weight:normal;letter-spacing:4px;color:#d9c39d">МИР ПРОЙДЕН</h2><p class="desc" id="endText">Ты восстановил марионетку.</p><button class="action" id="nextBtn">ОТКРЫТЬ СЛЕДУЮЩУЮ ДВЕРЬ</button></div></div>
-<div class="overlay hidden" id="finalScreen"><div class="card"><h1 class="title">PUPPET</h1><div class="subtitle">THE END</div><p class="desc">Ты собрал все двадцать частей.<br>Теперь наступает твоя концовка.</p></div></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<body>
+<main class="scene">
+  <div class="topbar">
+    <div class="brand">A MOMENT OF STILLNESS<b>STONE MEDITATION</b></div>
+    <div style="display:flex;align-items:center;gap:7px">
+      <div class="coins" title="Твой баланс"><span class="coin-icon">✦</span><strong id="coinBalance">0</strong><span style="color:#858a7a">coins</span></div>
+      <div class="coins daily-counter" title="Дневной лимит награждаемых минут"><span style="color:#aeb39f">☼</span><strong id="dailyCount">0/30</strong></div>
+    </div>
+  </div>
+
+  <button class="ad-button" id="adButton" aria-label="Watch an ad for bonus coins">
+    <span class="play">▶</span><span>Смотреть рекламу<br><small style="color:#b4b4a4">+25 монет</small></span>
+  </button>
+
+  <section class="center">
+    <div class="eyebrow" id="modeLabel">ПРАКТИКА ТИШИНЫ</div>
+    <div class="timer" id="timer">00:00</div>
+    <div class="hint" id="hint">Коснись камня и замри</div>
+    <div class="stone-stage" id="stoneStage" role="button" aria-label="Удерживай палец неподвижно на камне">
+      <div class="stone-shadow"></div><div class="stone" id="mainStone"></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-line"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label"><span id="minuteProgress">0 / 60 сек</span><span>+10 ✦ / мин</span></div>
+    </div>
+  </section>
+
+  <div class="bottom">
+    <div class="bottom-top"><span class="bottom-title">Твоя коллекция</span><span class="current-stone" id="currentStoneName">Сланец · выбран</span></div>
+    <button class="shop-toggle" id="shopToggle"><span class="slider-track"></span><span>ПОДНИМИ, ЧТОБЫ ОТКРЫТЬ МАГАЗИН</span><span>⌃</span></button>
+  </div>
+
+  <section class="shop" id="shop" aria-label="Магазин камней">
+    <div class="grabber"></div>
+    <div class="shop-head"><h2>Коллекция камней</h2><button class="close" id="closeShop" aria-label="Закрыть магазин">×</button></div>
+    <div class="shop-list" id="shopList"></div>
+    <p class="ad-note">Монеты зарабатываются за каждую полную минуту неподвижного удержания. Реклама в демо-режиме не запускается: подключи рекламный SDK и укажи свой рекламный ID в коде.</p>
+  </section>
+  <div class="distraction-layer" id="distractionLayer" aria-hidden="true">
+    <div class="fake-notification" id="fakeNotification">
+      <div class="notif-icon" id="notifIcon">✉</div>
+      <div class="notif-copy">
+        <div class="notif-head"><span id="notifTitle">Сообщение</span><span class="notif-time">сейчас</span></div>
+        <div class="notif-body" id="notifBody">Ты точно не хочешь посмотреть?</div>
+      </div>
+    </div>
+    <div class="fake-call" id="fakeCall">
+      <div class="call-card">
+        <div class="call-avatar" id="callAvatar">☎</div>
+        <div class="call-label">Входящий вызов</div>
+        <div class="call-name" id="callName">Неизвестный номер</div>
+        <div class="call-sub">мобильный · звонит...</div>
+        <div class="call-actions">
+          <div class="call-action"><div class="call-circle">✕</div><span>Отклонить</span></div>
+          <div class="call-action"><div class="call-circle" style="background:#507b4b">☎</div><span>Ответить</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+</main>
 <script>
-(()=>{'use strict';
-const CONFIG={ADSGRAM_BLOCK_ID:'YOUR_ADSGRAM_BLOCK_ID',MAX_ADS:30};
-const WORLDS=[
- {name:'МИР I · КАМЕННЫЙ ЛАБИРИНТ',title:'КАМЕННЫЙ ЛАБИРИНТ',parts:[['Левый глаз','зрение'],['Правый глаз','зрение'],['Сердце','пульс'],['Левая кисть','хват']],color:0x746b5d},
- {name:'МИР II · ЗАБРОШЕННЫЙ ТЕАТР',title:'ЗАБРОШЕННЫЙ ТЕАТР',parts:[['Лёгкие','дыхание'],['Правая кисть','хват'],['Левая стопа','опора'],['Правая стопа','опора']],color:0x63433e},
- {name:'МИР III · ПОДЗЕМНЫЙ ХРАМ',title:'ПОДЗЕМНЫЙ ХРАМ',parts:[['Позвоночник','равновесие'],['Левое плечо','подвижность'],['Правое плечо','подвижность'],['Желудок','выносливость']],color:0x58665c},
- {name:'МИР IV · МЕХАНИЧЕСКИЙ ГОРОД',title:'МЕХАНИЧЕСКИЙ ГОРОД',parts:[['Левая мышца ноги','сила'],['Правая мышца ноги','сила'],['Левая мышца руки','сила'],['Правая мышца руки','сила']],color:0x59636b},
- {name:'МИР V · ЧЁРНАЯ СЦЕНА',title:'ЧЁРНАЯ СЦЕНА',parts:[['Кожа','защита'],['Череп','устойчивость'],['Челюсть','голос'],['Настоящее лицо','завершение']],color:0x574b61}
+/*
+ * ADGRAM INTEGRATION
+ * Вставь сюда выданный AdGram ID/Block ID и подключи официальный SDK.
+ * Не выдавай бонус за простой клик: начисляй его только после подтверждённого
+ * callback успешного rewarded-рекламного просмотра от рекламного SDK.
+ */
+const ADGRAM_BLOCK_ID = "YOUR_ADGRAM_BLOCK_ID";
+const ADGRAM_PLACEMENT_ID = "YOUR_ADGRAM_PLACEMENT_ID";
+
+const COINS_PER_MINUTE = 10;
+const AD_BONUS_COINS = 25;
+const DAILY_MINUTE_LIMIT = 30;
+const HOLD_RESET_MOVEMENT_PX = 12;
+const SAVE_KEY = "stone-meditation-save-v1";
+
+const stones = [
+  {id:"slate", name:"Сланец", price:0, css:"rock-slate", description:"Тихая классика"},
+  {id:"amber", name:"Янтарный", price:60, css:"rock-amber", description:"Тёплый свет"},
+  {id:"jade", name:"Нефрит", price:150, css:"rock-jade", description:"Лесное спокойствие"},
+  {id:"obsidian", name:"Обсидиан", price:300, css:"rock-obsidian", description:"Чёрное зеркало"}
 ];
-const $=id=>document.getElementById(id);const saveKey='puppet_save_v1';let saved={world:0,found:[],ads:0};try{saved={...saved,...JSON.parse(localStorage.getItem(saveKey)||'{}')}}catch(e){};saved.found=Array.isArray(saved.found)?saved.found:[];saved.ads=Math.min(CONFIG.MAX_ADS,Math.max(0,Number(saved.ads)||0));saved.world=Math.max(0,Math.min(4,Number(saved.world)||0));
-const save=()=>{try{localStorage.setItem(saveKey,JSON.stringify(saved))}catch(e){}};const toast=(s)=>{const t=$('toast');t.textContent=s;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),2800)};
-$('adCount').textContent=saved.ads+'/'+CONFIG.MAX_ADS;
-let scene,camera,renderer,clock,puppet,limbs={},parts=[],walls=[],worldIndex=saved.world,move={x:0,z:0},activePointers=new Map(),hintedId=null,adController=null,started=false,worldComplete=false;
-const root=$('game');
-function init3D(){scene=new THREE.Scene();scene.background=new THREE.Color(0x080809);scene.fog=new THREE.FogExp2(0x09090b,.045);camera=new THREE.PerspectiveCamera(54,innerWidth/innerHeight,.1,100);camera.position.set(0,3.3,7.2);renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;root.appendChild(renderer.domElement);clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0x9b9bab,0x211810,1.15));const key=new THREE.SpotLight(0xffd9a0,2.1,24,Math.PI/4,.55,1.4);key.position.set(2,7,4);key.castShadow=true;scene.add(key);const fill=new THREE.PointLight(0x53627a,.75,18);fill.position.set(-4,2,-5);scene.add(fill);buildPuppet();buildWorld(worldIndex);window.addEventListener('resize',resize);renderer.domElement.addEventListener('pointerdown',onSceneTap);animate();}
-function mat(color,rough=.85,metal=0){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal})}
-function box(w,h,d,m,x,y,z){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
-function sphere(r,m,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;scene.add(o);return o}
-function cylinder(a,b,h,m,x,y,z){const o=new THREE.Mesh(new THREE.CylinderGeometry(a,b,h,12),m);o.position.set(x,y,z);o.castShadow=true;scene.add(o);return o}
-function buildPuppet(){puppet=new THREE.Group();scene.add(puppet);const wood=mat(0x9a7046),dark=mat(0x3c271b),joint=mat(0x241c18,.5,.25),eye=mat(0x050505,.15),gold=mat(0xc59b5b,.35,.4);
- const torso=sphere(.32,wood,0,1.75,0,.78,1.45,.48);torso.position.set(0,1.55,0);puppet.add(torso);
- const chest=sphere(.27,dark,0,1.86,.02,.72,.7,.5);puppet.add(chest);
- const head=sphere(.32,wood,0,2.42,0,.82,1,.75);puppet.add(head);const jaw=sphere(.19,dark,0,2.24,.1,.8,.55,.65);puppet.add(jaw);
- const eyeL=sphere(.055,eye,-.13,2.48,.24);const eyeR=sphere(.055,eye,.13,2.48,.24);puppet.add(eyeL,eyeR);
- function limb(name,x,y,z,len){const g=new THREE.Group();g.position.set(x,y,z);const upper=cylinder(.085,.11,len*.53,wood,0,-len*.265,0);upper.rotation.z=(x<0?-.08:.08);const lower=cylinder(.065,.085,len*.48,wood,0,-len*.78,0);lower.position.y=-len*.53;const ball=sphere(.105,joint,0,-len*.53,0);g.add(upper,lower,ball);puppet.add(g);limbs[name]=g;}
- limb('leftArm',-.34,1.95,0,.62);limb('rightArm',.34,1.95,0,.62);limb('leftLeg',-.17,1.15,0,.72);limb('rightLeg',.17,1.15,0,.72);
- const neck=cylinder(.08,.1,.2,joint,0,2.1,0);puppet.add(neck);puppet.position.set(0,0,1.1);
+
+let save = loadSave();
+let holding = false, pointerId = null, startX = 0, startY = 0, startedAt = 0;
+let elapsedBefore = 0, awardedMinutes = 0, raf = 0, toastTimer = 0;
+let distractionTimer = 0, activeDistractionTimer = 0, bugTimer = 0;
+const $ = id => document.getElementById(id);
+function todayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
-function clearWorld(){for(const o of [...walls,...parts])scene.remove(o);walls=[];parts=[];}
-function buildWorld(index){clearWorld();worldComplete=saved.found.filter(v=>Math.floor(v/4)===index).length===4;const w=WORLDS[index];$('worldName').textContent=w.name;scene.background=new THREE.Color(index===0?0x08090a:w.color);scene.fog=new THREE.FogExp2(index===0?0x0b0b0d:w.color,.045);const stone=mat(index===0?0x383633:w.color),floor=mat(0x171615),trim=mat(0x71604c,.9);const ground=box(13,.25,28,floor,0,-.18,-8);walls.push(ground);
- // Narrow, readable winding corridor made from stone blocks.
- const layout=[[-3.4,1,-7, .35,2.5,20],[3.4,1,-7,.35,2.5,20],[-1.8,1,-14,3.2,2.5,.35],[1.8,1,-1,3.2,2.5,.35],[-2.2,1,-9,2.4,2.5,.35],[2.1,1,-5,2.5,2.5,.35]];
- layout.forEach(a=>walls.push(box(a[3],a[4],a[5],stone,a[0],a[1],a[2])));
- // pillars and torches
- for(let i=0;i<5;i++){const z=-3-i*3.1;const p=box(.22,1.8,.22,trim,(i%2?2.5:-2.5),.8,z);walls.push(p);const flame=new THREE.PointLight(0xff9a4b,.65,5);flame.position.set(i%2?2.5:-2.5,1.9,z);scene.add(flame);walls.push(flame);}
- // Four unique pickups in every world. Touch a glowing object to collect it.
- const positions=[[-1.8,.48,-3.6],[1.8,.48,-7.3],[-1.7,.48,-11.2],[1.7,.48,-15.4]];
- w.parts.forEach((p,i)=>{const id=index*4+i;if(saved.found.includes(id))return;const g=new THREE.Group();const glow=new THREE.Mesh(new THREE.IcosahedronGeometry(.22,1),new THREE.MeshStandardMaterial({color:0xd9b36f,emissive:0x8c4c16,emissiveIntensity:1.2,roughness:.3}));g.add(glow);const ring=new THREE.Mesh(new THREE.TorusGeometry(.34,.018,8,24),new THREE.MeshBasicMaterial({color:0xcaa66c}));ring.rotation.x=Math.PI/2;g.add(ring);g.position.set(...positions[i]);g.userData={id,name:p[0],ability:p[1],baseY:.48};scene.add(g);parts.push(g);});
- // Exit marker only becomes active when all four parts in this world are installed.
- const doorMat=mat(0x30251e);const door=box(1.5,2.3,.18,doorMat,0,1.05,-19);door.userData.isDoor=true;walls.push(door);const lamp=new THREE.PointLight(0x9b663b,.7,7);lamp.position.set(0,2,-18);scene.add(lamp);walls.push(lamp);
- camera.position.set(0,3.25,5.5);camera.lookAt(0,1.3,-4);puppet.position.set(0,0,1.2);
+function loadSave(){
+  try {
+    const s = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
+    const today = todayKey();
+    return {
+      coins:Number.isFinite(s.coins)?s.coins:0,
+      owned:Array.isArray(s.owned)?[...new Set(["slate",...s.owned])]:["slate"],
+      selected:s.selected||"slate",
+      dailyDate:s.dailyDate===today?today:today,
+      dailyMinutes:s.dailyDate===today&&Number.isFinite(s.dailyMinutes)?Math.min(DAILY_MINUTE_LIMIT,s.dailyMinutes):0
+    };
+  } catch { return {coins:0,owned:["slate"],selected:"slate",dailyDate:todayKey(),dailyMinutes:0}; }
 }
-function onSceneTap(e){if(!started||worldComplete)return;const rect=renderer.domElement.getBoundingClientRect();const mouse=new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-((e.clientY-rect.top)/rect.height)*2+1);const ray=new THREE.Raycaster();ray.setFromCamera(mouse,camera);const hits=ray.intersectObjects(parts,true);if(hits.length){let obj=hits[0].object;while(obj&&!obj.userData.id&&obj.parent)obj=obj.parent;if(obj&&obj.userData.id!==undefined)collect(obj);}}
-function collect(obj){const id=obj.userData.id;if(saved.found.includes(id))return;saved.found.push(id);save();scene.remove(obj);parts=parts.filter(p=>p!==obj);toast('УСТАНОВЛЕНО: '+obj.userData.name.toUpperCase()+' · '+obj.userData.ability.toUpperCase());const count=saved.found.filter(v=>Math.floor(v/4)===worldIndex).length;if(count===4){worldComplete=true;$('endTitle').textContent='МИР ВОССТАНОВЛЕН';$('endText').textContent='Все четыре части установлены. Дверь в следующий мир открыта.';$('endWorld').classList.remove('hidden');}}
-function nextWorld(){ $('endWorld').classList.add('hidden');if(worldIndex>=4){$('finalScreen').classList.remove('hidden');return;}worldIndex++;saved.world=worldIndex;save();buildWorld(worldIndex);toast('ОТКРЫТ '+WORLDS[worldIndex].title);}
-function nearestPart(){if(!parts.length)return null;return [...parts].sort((a,b)=>a.position.distanceTo(puppet.position)-b.position.distanceTo(puppet.position))[0];}
-function revealHint(){const p=nearestPart();if(!p){toast('В ЭТОМ МИРЕ БОЛЬШЕ НЕТ НЕСОБРАННЫХ ЧАСТЕЙ');return;}hintedId=p.userData.id;p.children.forEach(c=>{if(c.material){c.material.emissive=new THREE.Color(0xffe3a1);c.material.emissiveIntensity=2.8;}});const names=['впереди слева','впереди справа','дальше по коридору слева','дальше по коридору справа'];const idx=parts.indexOf(p);toast('ПОДСКАЗКА: '+p.userData.name+' — ИЩИ '+names[Math.max(0,idx)%4]+'. ДЕТАЛЬ ПОДСВЕЧЕНА.');}
-function initAds(){try{if(window.Adsgram&&CONFIG.ADSGRAM_BLOCK_ID!=='YOUR_ADSGRAM_BLOCK_ID')adController=window.Adsgram.init({blockId:CONFIG.ADSGRAM_BLOCK_ID});}catch(e){console.warn('AdsGram init error',e)}}
-async function watchAd(){if(saved.ads>=CONFIG.MAX_ADS){toast('ЛИМИТ ПОДСКАЗОК 30/30 ДОСТИГНУТ');return;}if(!window.Adsgram||!adController){toast('РЕКЛАМА НЕ НАСТРОЕНА: ДОБАВЬ СВОЙ ADSGRAM BLOCK ID В CONFIG');return;}const btn=$('hintBtn');btn.disabled=true;try{const result=await adController.show();if(result&&result.done===true&&!result.error){saved.ads++;save();$('adCount').textContent=saved.ads+'/'+CONFIG.MAX_ADS;revealHint();}else toast('ПРОСМОТР НЕ ЗАСЧИТАН — ПОДСКАЗКА НЕ ВЫДАНА');}catch(err){console.warn(err);toast('РЕКЛАМА НЕ ЗАГРУЗИЛАСЬ. ПОПРОБУЙ ПОЗЖЕ.');}finally{btn.disabled=false;}}
-function start(){started=true;$('menu').classList.add('hidden');initAds();if(worldComplete){$('endTitle').textContent='МИР ВОССТАНОВЛЕН';$('endText').textContent='Все четыре части этого мира уже установлены. Дверь открыта.';$('endWorld').classList.remove('hidden');}else{toast('НАЙДИ ЧЕТЫРЕ ЧАСТИ. КОСНИСЬ СВЕТЯЩЕЙСЯ ДЕТАЛИ.');}}
-function resize(){if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));}
-function animate(){requestAnimationFrame(animate);if(!renderer)return;const t=clock.getElapsedTime();if(puppet){puppet.rotation.y=Math.sin(t*.42)*.08;puppet.position.y=.035*Math.sin(t*2.1);Object.entries(limbs).forEach(([name,g])=>{const held=[...activePointers.values()].includes(name);const base=Math.sin(t*1.6+name.length)*.035;g.rotation.x=held?Math.sin(t*11)*.62:base;g.rotation.z=held?(name.includes('Arm')?(name==='leftArm'?.45:-.45):(name==='leftLeg'?.22:-.22)):0;});}parts.forEach(p=>{p.rotation.y+=.012;p.position.y=p.userData.baseY+Math.sin(t*2+p.userData.id)*.07;});if(started){const target=new THREE.Vector3(puppet.position.x,2.65,puppet.position.z+5.7);camera.position.lerp(target,.035);camera.lookAt(puppet.position.x,1.35,puppet.position.z-4.1);const speed=.028;puppet.position.x+=move.x*speed;puppet.position.z+=move.z*speed;puppet.position.x=Math.max(-2.6,Math.min(2.6,puppet.position.x));puppet.position.z=Math.max(-17,Math.min(1.4,puppet.position.z));}renderer.render(scene,camera);}
-// Touch controls: left/right thumbs and index fingers map to the four limbs.
-document.querySelectorAll('.limb').forEach(btn=>{const name=btn.dataset.limb;const down=e=>{e.preventDefault();btn.classList.add('active');btn.setPointerCapture?.(e.pointerId);activePointers.set(e.pointerId,name);};const up=e=>{btn.classList.remove('active');activePointers.delete(e.pointerId);};btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointercancel',up);btn.addEventListener('lostpointercapture',up);});
-$('startBtn').addEventListener('click',start);$('nextBtn').addEventListener('click',nextWorld);$('hintBtn').addEventListener('click',watchAd);
-// Keyboard support for desktop testing.
-window.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')move.x=-1;if(e.key==='ArrowRight')move.x=1;if(e.key==='ArrowUp')move.z=-1;if(e.key==='ArrowDown')move.z=1;});window.addEventListener('keyup',()=>move={x:0,z:0});
-try{if(window.Telegram?.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}}catch(e){}
-init3D();$('worldName').textContent=WORLDS[worldIndex].name;$('adCount').textContent=saved.ads+'/'+CONFIG.MAX_ADS;
-})();
-</script></body></html>
+function persist(){ try{save.dailyDate=todayKey();localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch{} }
+function refreshDailyDate(){
+  if(save.dailyDate!==todayKey()){save.dailyDate=todayKey();save.dailyMinutes=0;persist();}
+}
+function selectedStone(){return stones.find(s=>s.id===save.selected)||stones[0]}
+function updateBalance(){
+  refreshDailyDate();
+  $("coinBalance").textContent=save.coins.toLocaleString("ru-RU");
+  $("dailyCount").textContent=save.dailyMinutes+"/"+DAILY_MINUTE_LIMIT;
+  $("dailyCount").style.color=save.dailyMinutes>=DAILY_MINUTE_LIMIT?"#d18b7e":"var(--cream)";
+}
+function showToast(message){
+  const el=$("toast"); el.textContent=message; el.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove("show"),2200);
+}
+function formatTime(seconds){
+  const s=Math.floor(seconds), m=Math.floor(s/60), r=s%60;
+  return String(m).padStart(2,"0")+":"+String(r).padStart(2,"0");
+}
+function setStoneLook(){
+  const s=selectedStone();
+  $("mainStone").className="stone "+s.css;
+  $("currentStoneName").textContent=s.name+" · выбран";
+}
+function renderShop(){
+  $("shopList").innerHTML="";
+  stones.forEach(stone=>{
+    const owned=save.owned.includes(stone.id), selected=save.selected===stone.id;
+    const card=document.createElement("button");
+    card.className="stone-card"+(selected?" selected":"");
+    card.innerHTML=`<div class="mini-stone"><div class="mini-rock ${stone.css}"></div></div>
+      <div class="card-name">${stone.name}</div>
+      <div class="card-price">${stone.price===0?"Бесплатно":"✦ "+stone.price}</div>
+      <div class="card-action">${selected?"✓ Выбран":owned?"Выбрать": "Купить камень"}</div>`;
+    card.addEventListener("click",()=>{
+      if(owned){save.selected=stone.id;persist();setStoneLook();renderShop();return;}
+      if(save.coins<stone.price){showToast("Не хватает монет");return;}
+      save.coins-=stone.price;save.owned.push(stone.id);save.selected=stone.id;
+      persist();updateBalance();setStoneLook();renderShop();showToast("Новый камень добавлен!");
+    });
+    $("shopList").appendChild(card);
+  });
+}
+function openShop(open=true){$("shop").classList.toggle("open",open);}
+function stopDistractions(){
+  clearTimeout(distractionTimer);clearTimeout(activeDistractionTimer);clearTimeout(bugTimer);
+  $("fakeNotification").classList.remove("show");
+  $("fakeCall").classList.remove("show");
+  document.querySelectorAll(".crawl-bug").forEach(el=>el.remove());
+}
+const distractions = [
+  {kind:"notif",icon:"💬",title:"Сообщения",body:"Ты обещал ответить. Это займёт всего секунду…"},
+  {kind:"notif",icon:"🏦",title:"Банк · Уведомление",body:"Поступило новое уведомление по вашей карте. Откройте приложение, чтобы посмотреть."},
+  {kind:"notif",icon:"📦",title:"Доставка",body:"Курьер уже рядом. Не пропусти важное сообщение!"},
+  {kind:"notif",icon:"🔔",title:"Напоминание",body:"Самое время проверить, что происходит в телефоне."},
+  {kind:"notif",icon:"🎁",title:"Бонус дня",body:"Кажется, тебя ждёт что-то интересное. Только взгляни!"},
+  {kind:"call",name:"Неизвестный номер"},
+  {kind:"call",name:"Банк · служба поддержки"},
+  {kind:"call",name:"Очень важный контакт"}
+];
+function spawnBug(){
+  if(!holding)return;
+  const bug=document.createElement("div");bug.className="crawl-bug";
+  const stage=$("stoneStage").getBoundingClientRect();
+  const x=Math.max(8,Math.min(window.innerWidth-35,stage.left+Math.random()*stage.width));
+  const y=Math.max(120,Math.min(window.innerHeight-180,stage.top+Math.random()*stage.height));
+  bug.style.left=x+"px";bug.style.top=y+"px";
+  bug.style.animationDuration=(9+Math.random()*7)+"s";
+  $("distractionLayer").appendChild(bug);
+  setTimeout(()=>bug.remove(),17000);
+  if(holding)bugTimer=setTimeout(spawnBug,7000+Math.random()*7000);
+}
+function showDistraction(){
+  if(!holding)return;
+  const d=distractions[Math.floor(Math.random()*distractions.length)];
+  if(d.kind==="call"){
+    $("callName").textContent=d.name;
+    $("fakeCall").classList.add("show");
+    activeDistractionTimer=setTimeout(()=>$("fakeCall").classList.remove("show"),5200);
+  } else {
+    $("notifIcon").textContent=d.icon;$("notifTitle").textContent=d.title;$("notifBody").textContent=d.body;
+    $("fakeNotification").classList.add("show");
+    activeDistractionTimer=setTimeout(()=>$("fakeNotification").classList.remove("show"),4600);
+  }
+  if(holding)distractionTimer=setTimeout(showDistraction,6500+Math.random()*6500);
+}
+function startDistractions(){
+  stopDistractions();
+  distractionTimer=setTimeout(showDistraction,4500+Math.random()*3500);
+  bugTimer=setTimeout(spawnBug,3500+Math.random()*2500);
+}
+function stopAttempt(message){
+  if(!holding)return;
+  holding=false; pointerId=null;
+  stopDistractions();
+  if(raf)cancelAnimationFrame(raf);
+  elapsedBefore=0;awardedMinutes=0;
+  $("stoneStage").classList.remove("holding");
+  $("timer").textContent="00:00";$("progressFill").style.width="0%";$("minuteProgress").textContent="0 / 60 сек";
+  $("hint").textContent="Коснись камня и замри";
+  if(message)showToast(message);
+}
+function tick(){
+  if(!holding)return;
+  const elapsed=elapsedBefore+(performance.now()-startedAt)/1000;
+  $("timer").textContent=formatTime(elapsed);
+  const sec=Math.floor(elapsed%60);
+  $("progressFill").style.width=(sec/60*100)+"%";
+  $("minuteProgress").textContent=sec+" / 60 сек";
+  const completed=Math.floor(elapsed/60);
+  while(awardedMinutes<completed){
+    awardedMinutes++;
+    refreshDailyDate();
+    if(save.dailyMinutes<DAILY_MINUTE_LIMIT){
+      save.dailyMinutes++;
+      save.coins+=COINS_PER_MINUTE;persist();updateBalance();
+      showToast("+"+COINS_PER_MINUTE+" монет · минута выдержки!");
+    } else {
+      persist();updateBalance();
+      showToast("Дневной лимит 30/30 достигнут");
+    }
+  }
+  $("hint").textContent=elapsed<60?"Сохраняй полную неподвижность":"Продолжай. Ты в потоке.";
+  raf=requestAnimationFrame(tick);
+}
+function beginAttempt(e){
+  if(e.button!==undefined&&e.button!==0)return;
+  if(holding)return;
+  e.preventDefault();
+  holding=true;pointerId=e.pointerId;startX=e.clientX;startY=e.clientY;
+  startedAt=performance.now();elapsedBefore=0;awardedMinutes=0;
+  $("stoneStage").classList.add("holding");$("hint").textContent="Дыши спокойно. Не двигайся.";
+  startDistractions();
+  try{$("stoneStage").setPointerCapture(e.pointerId)}catch{}
+  raf=requestAnimationFrame(tick);
+}
+function moveAttempt(e){
+  if(!holding||e.pointerId!==pointerId)return;
+  const dx=e.clientX-startX,dy=e.clientY-startY;
+  if(Math.hypot(dx,dy)>HOLD_RESET_MOVEMENT_PX)stopAttempt("Палец сдвинулся — попробуй ещё раз");
+}
+function endAttempt(e){
+  if(!holding||(e.pointerId!==undefined&&e.pointerId!==pointerId))return;
+  stopAttempt("Касание прервано — таймер сброшен");
+}
+$("stoneStage").addEventListener("pointerdown",beginAttempt);
+$("stoneStage").addEventListener("pointermove",moveAttempt);
+$("stoneStage").addEventListener("pointerup",endAttempt);
+$("stoneStage").addEventListener("pointercancel",endAttempt);
+$("stoneStage").addEventListener("lostpointercapture",()=>{if(holding)stopAttempt("Касание прервано — таймер сброшен")});
+$("shopToggle").addEventListener("click",()=>openShop(!$("shop").classList.contains("open")));
+$("closeShop").addEventListener("click",()=>openShop(false));
+
+/* Rewarded ads placeholder. Replace with official AdGram SDK integration.
+   Call grantAdReward() ONLY from the SDK's verified reward callback. */
+function grantAdReward(){
+  save.coins+=AD_BONUS_COINS;persist();updateBalance();showToast("Реклама просмотрена: +"+AD_BONUS_COINS+" монет");
+}
+$("adButton").addEventListener("click",()=>{
+  if(ADGRAM_BLOCK_ID==="YOUR_ADGRAM_BLOCK_ID"||ADGRAM_PLACEMENT_ID==="YOUR_ADGRAM_PLACEMENT_ID"){
+    showToast("Добавь свой AdGram ID и подключи SDK");
+    return;
+  }
+  // TODO: call AdGram rewarded ad SDK with ADGRAM_BLOCK_ID / ADGRAM_PLACEMENT_ID.
+  // On its verified reward callback, call grantAdReward().
+  showToast("Подключи официальный AdGram SDK");
+});
+
+let touchStartY=null;
+$("shopToggle").addEventListener("touchstart",e=>{touchStartY=e.touches[0].clientY},{passive:true});
+$("shopToggle").addEventListener("touchend",e=>{
+  if(touchStartY!==null&&touchStartY-e.changedTouches[0].clientY>25)openShop(true);
+  touchStartY=null;
+},{passive:true});
+
+updateBalance();setStoneLook();renderShop();
+</script>
+</body>
+</html>
