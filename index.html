@@ -1,69 +1,57 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="theme-color" content="#08070e">
-  <title>Pulsora</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    body{background:#08070e;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100dvh;overflow:hidden}
-    .app{min-height:100dvh;position:relative;display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top) + 32px) 22px calc(env(safe-area-inset-bottom) + 24px);overflow:hidden}
-    .glow{position:absolute;width:280px;height:280px;border-radius:50%;background:#6426ff;filter:blur(130px);opacity:.18;pointer-events:none}
-    .glow.top{top:-160px;left:-150px}.glow.bottom{bottom:-180px;right:-140px}
-    .top{width:100%;display:flex;align-items:center;justify-content:space-between;z-index:2}
-    .score-pill{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:100px;padding:12px 20px;font-size:21px;font-weight:600}
-    .star{font-size:25px}
-    .ads-wrap{display:flex;flex-direction:column;align-items:center;gap:5px}
-    .ads-button{width:78px;height:78px;border-radius:50%;background:#100d1c;border:2px solid #7946ff;color:white;font-size:20px;font-weight:700;box-shadow:0 0 18px rgba(120,60,255,.22);cursor:pointer;transition:transform .15s,opacity .2s}
-    .ads-button:active{transform:scale(.94)}.ads-button:disabled{opacity:.5;cursor:default}
-    .boost-label{background:linear-gradient(90deg,#783bff,#a43dff);border-radius:100px;padding:7px 15px;font-weight:800;font-size:15px;box-shadow:0 0 18px rgba(130,50,255,.4);white-space:nowrap}
-    .counter{text-align:center;margin-top:45px;z-index:1}.number{font-size:clamp(72px,20vw,108px);font-weight:750;letter-spacing:-4px;line-height:1}.caption{margin-top:15px;color:#aaa1c7;font-size:24px}
-    .tap-area{flex:1;min-height:220px;display:flex;align-items:center;justify-content:center;width:100%;z-index:1}
-    .tap-ring{width:min(72vw,310px);height:min(72vw,310px);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(circle,rgba(125,65,255,.09) 0%,rgba(125,65,255,.02) 68%,transparent 70%);border:1px solid rgba(130,80,255,.12)}
-    .tap-button{width:76%;height:76%;border:none;border-radius:50%;background:linear-gradient(145deg,#8b80ff,#762aff 90%);box-shadow:0 0 35px rgba(122,50,255,.35),inset 0 3px 15px rgba(255,255,255,.2);color:white;font-size:55px;cursor:pointer;user-select:none;touch-action:manipulation;transition:transform .08s ease;display:flex;align-items:center;justify-content:center}
-    .tap-button:active,.tap-button.pressed{transform:scale(.93)}.tap-button span{pointer-events:none;font-weight:300}
-    .float{position:fixed;color:#c3a5ff;font-size:24px;font-weight:700;pointer-events:none;animation:floatUp .65s ease-out forwards;z-index:10}
-    @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-90px) scale(1.25)}}
-    .bottom{width:min(100%,340px);display:flex;justify-content:center;align-items:center;gap:12px;padding:17px 22px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:100px;z-index:2;margin-top:10px;font-size:19px}
-    .bolt{color:#b28aff;font-size:27px}.boost-timer{display:none;color:#b99aff;font-size:14px;margin-top:12px;z-index:2}.boost-timer.active{display:block}
-    .toast{position:fixed;bottom:115px;left:50%;transform:translateX(-50%) translateY(10px);background:#211a35;border:1px solid #50318b;border-radius:15px;padding:12px 18px;font-size:14px;opacity:0;transition:.25s;z-index:20;text-align:center;width:max-content;max-width:90%}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#080711">
+<title>NovaCore — Заряд ядра</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+<style>
+:root{--bg:#080711;--panel:#11101d;--purple:#9b5cff;--light:#d9c2ff;--muted:#9a91aa;--line:#2b213e}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 30%,#21113e 0%,#0b0815 48%,var(--bg) 75%);color:#fff;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;overflow-x:hidden}
+.wrap{max-width:480px;margin:auto;padding:20px 17px 30px}.top{display:flex;align-items:center;justify-content:space-between}.brand{font-weight:850;letter-spacing:2px;font-size:18px}.brand span{color:#bd8cff}.chip{border:1px solid #342448;background:#171022;border-radius:20px;padding:8px 12px;color:#d7c5f6;font-size:12px}
+.scorebox{margin:24px auto 10px;text-align:center}.label{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}.score{font-size:42px;font-weight:800;letter-spacing:-1px;margin-top:5px;text-shadow:0 0 25px #9658ff55}.energy{color:#c9a5ff;font-size:13px;margin-top:4px}
+.core-area{height:320px;display:grid;place-items:center;position:relative;touch-action:manipulation}.ring{position:absolute;width:255px;height:255px;border:1px solid #9a55ff33;border-radius:50%;box-shadow:0 0 40px #823cff14,inset 0 0 30px #823cff10;animation:rotate 25s linear infinite}.ring:before,.ring:after{content:'';position:absolute;border-radius:50%;border:1px solid #be8dff30;inset:18px}.ring:after{inset:44px;border-style:dashed}.core{border:0;width:180px;height:180px;border-radius:50%;cursor:pointer;position:relative;background:radial-gradient(circle at 35% 28%,#e5cfff 0%,#b47cff 10%,#7d36e6 34%,#33105c 65%,#13081e 100%);box-shadow:0 0 18px #a35bff88,0 0 58px #8135e766,0 0 105px #6b25cf35,inset -15px -18px 34px #090411;transition:transform .09s,filter .1s;outline:none}.core:active{transform:scale(.94);filter:brightness(1.25)}.core:before{content:'';position:absolute;inset:12px;border:1px solid #e8cfff6c;border-radius:50%;box-shadow:inset 0 0 22px #d4a3ff30}.core:after{content:'';position:absolute;left:28px;top:24px;width:42px;height:28px;border-radius:50%;background:#fff3;filter:blur(8px);transform:rotate(-30deg)}.core.pulse{animation:pulse .35s ease-out}.tapnote{position:absolute;bottom:2px;font-size:13px;color:#bda0e5}
+@keyframes rotate{to{transform:rotate(360deg)}}@keyframes pulse{0%{transform:scale(1)}45%{transform:scale(1.075);filter:brightness(1.45)}100%{transform:scale(1)}}
+.rowstats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 14px}.stat{background:#12101d;border:1px solid var(--line);border-radius:14px;padding:13px}.stat small{color:var(--muted);display:block;font-size:11px}.stat strong{display:block;margin-top:5px;font-size:16px}
+.card{background:linear-gradient(180deg,#141020,#100d18);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:12px}.cardhead{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700}.sub{color:var(--muted);font-size:12px;margin-top:6px}.upgrade{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}.upinfo{flex:1}.upinfo b{font-size:14px}.upinfo span{display:block;color:var(--muted);font-size:12px;margin-top:4px}.btn{border:1px solid #7146a9;background:linear-gradient(135deg,#6730b2,#3a1c64);color:white;border-radius:12px;padding:11px 14px;font-weight:700;font-size:12px;min-width:100px;cursor:pointer}.btn:disabled{opacity:.42;cursor:default}.adbtn{width:100%;margin-top:11px;background:linear-gradient(90deg,#492475,#752ec5);border:1px solid #9560d2;padding:14px;border-radius:13px;color:#fff;font-weight:750;cursor:pointer}.missions{margin-top:12px}.mission{margin-top:12px}.missionline{display:flex;justify-content:space-between;gap:10px;font-size:12px}.missionline span:last-child{color:#c4a0f4}.bar{height:6px;border-radius:9px;background:#282135;margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7940d4,#c5a1ff);border-radius:9px;transition:width .25s}.footer{text-align:center;color:#716880;font-size:10px;margin-top:22px;letter-spacing:.5px}
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);background:#241534;border:1px solid #69429a;padding:11px 16px;border-radius:12px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:5;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
 </head>
 <body>
-  <main class="app">
-    <div class="glow top"></div><div class="glow bottom"></div>
-    <header class="top">
-      <div class="score-pill"><span class="star">⭐</span><span id="score">0</span></div>
-      <div class="ads-wrap"><button class="ads-button" id="adsButton">ADS</button><div class="boost-label">×2 TAP</div></div>
-    </header>
-    <section class="counter"><div class="number" id="tapCount">0</div><div class="caption">Тапов</div></section>
-    <section class="tap-area"><div class="tap-ring"><button class="tap-button" id="tapButton" aria-label="Тап"><span>✦</span></button></div></section>
-    <div class="bottom"><span class="bolt">ϟ</span><span id="tapReward">+1 за тап</span></div>
-    <div class="boost-timer" id="boostTimer"></div><div class="toast" id="toast"></div>
-  </main>
-  <script>
-    // ВСТАВЬ СВОЙ ADSGRAM BLOCK ID В КАВЫЧКИ НИЖЕ
-    const ADSGRAM_BLOCK_ID = "61897";
-    const BOOST_DURATION = 30; // x2 на 30 секунд
-    const tg = window.Telegram?.WebApp;
-    if (tg) { tg.ready(); tg.expand(); }
-    const scoreEl=document.getElementById('score'), tapCountEl=document.getElementById('tapCount'), tapButton=document.getElementById('tapButton'), adsButton=document.getElementById('adsButton'), boostTimerEl=document.getElementById('boostTimer'), tapRewardEl=document.getElementById('tapReward'), toastEl=document.getElementById('toast');
-    let score=Number(localStorage.getItem('starweek_score')||0), tapCount=Number(localStorage.getItem('starweek_taps')||0), boostUntil=Number(localStorage.getItem('starweek_boost')||0);
-    function isBoostActive(){return Date.now()<boostUntil}
-    function getTapReward(){return isBoostActive()?2:1}
-    function saveGame(){localStorage.setItem('starweek_score',score);localStorage.setItem('starweek_taps',tapCount);localStorage.setItem('starweek_boost',boostUntil)}
-    function updateUI(){scoreEl.textContent=score.toLocaleString();tapCountEl.textContent=tapCount.toLocaleString();if(isBoostActive()){const seconds=Math.ceil((boostUntil-Date.now())/1000);boostTimerEl.textContent=`×2 активно · ${seconds} сек`;boostTimerEl.classList.add('active');tapRewardEl.textContent='+2 за тап'}else{boostTimerEl.classList.remove('active');tapRewardEl.textContent='+1 за тап'}}
-    function showToast(message){toastEl.textContent=message;toastEl.classList.add('show');setTimeout(()=>toastEl.classList.remove('show'),2300)}
-    function showFloat(event,amount){const el=document.createElement('div');el.className='float';el.textContent=`+${amount}`;let x=innerWidth/2,y=innerHeight/2;if(event&&event.clientX){x=event.clientX;y=event.clientY}el.style.left=`${x}px`;el.style.top=`${y}px`;document.body.appendChild(el);setTimeout(()=>el.remove(),700)}
-    tapButton.addEventListener('click',event=>{const reward=getTapReward();score+=reward;tapCount++;saveGame();updateUI();showFloat(event,reward);tapButton.classList.add('pressed');setTimeout(()=>tapButton.classList.remove('pressed'),90);try{tg?.HapticFeedback?.impactOccurred('light')}catch(e){}});
-    let AdController=null;
-    function initAds(){if(!window.Adsgram)return;if(ADSGRAM_BLOCK_ID&&ADSGRAM_BLOCK_ID!=='YOUR_ADSGRAM_BLOCK_ID'){try{AdController=window.Adsgram.init({blockId:ADSGRAM_BLOCK_ID,debug:false})}catch(e){console.error('AdsGram init error',e)}}}
-    initAds();
-    adsButton.addEventListener('click',async()=>{if(!AdController){showToast('Сначала впиши Block ID AdsGram');return}adsButton.disabled=true;adsButton.textContent='...';try{const result=await AdController.show();if(result&&result.done===true){boostUntil=Date.now()+BOOST_DURATION*1000;saveGame();updateUI();showToast('×2 TAP активирован на 30 секунд!')}else{showToast('Реклама не завершена — бонус не начислен')}}catch(error){console.log('Ad error',error);showToast('Реклама недоступна. Попробуй позже.')}finally{adsButton.disabled=false;adsButton.textContent='ADS'}});
-    setInterval(()=>{updateUI();if(boostUntil&&Date.now()>=boostUntil){boostUntil=0;saveGame();updateUI()}},500);updateUI();
-  </script>
+<div class="wrap">
+ <header class="top"><div class="brand">NOVA<span>CORE</span></div><div class="chip">✦ CORE ONLINE</div></header>
+ <section class="scorebox"><div class="label">Всего энергии</div><div class="score" id="score">0</div><div class="energy" id="rate">+1 энергия за тап</div></section>
+ <div class="core-area"><div class="ring" id="ring"></div><button class="core" id="core" aria-label="Зарядить ядро"></button><div class="tapnote">НАЖМИ НА ЯДРО</div></div>
+ <div class="rowstats"><div class="stat"><small>Сила импульса</small><strong id="power">+1 / тап</strong></div><div class="stat"><small>Уровень ядра</small><strong id="level">1</strong></div></div>
+ <section class="card"><div class="cardhead"><span>⚡ Усиление импульса</span><span id="upgradeLvl">LVL 1</span></div><div class="upgrade"><div class="upinfo"><b>Увеличить силу тапа</b><span>+1 энергия за нажатие</span><span id="costText">Цена: 100 энергии</span></div><button class="btn" id="upgradeBtn">УЛУЧШИТЬ</button></div></section>
+ <section class="card"><div class="cardhead"><span>✦ Энергетический разгон</span><span id="boostStatus">×1</span></div><div class="sub" id="boostDesc">Посмотри рекламу по желанию — энергия ×2 на 30 секунд.</div><button class="adbtn" id="adBtn">▶ Получить ×2 за рекламу · 30 сек</button></section>
+ <section class="card missions"><div class="cardhead">🎯 Миссии ядра</div><div class="mission"><div class="missionline"><span>Сделать 100 тапов</span><span id="tapMission">0 / 100</span></div><div class="bar"><i id="tapBar"></i></div></div><div class="mission"><div class="missionline"><span>Накопить 500 энергии</span><span id="energyMission">0 / 500</span></div><div class="bar"><i id="energyBar"></i></div></div></section>
+ <div class="footer">NOVA CORE · ENERGY PROTOCOL</div>
+</div><div class="toast" id="toast"></div>
+<script>
+// ВСТАВЬ СВОЙ ADSGRAM BLOCK ID В ЭТУ СТРОКУ:
+const ADSGRAM_BLOCK_ID = "61897";
+const SAVE_KEY = "novacore_save_v1";
+const tg = window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+let data={energy:0,taps:0,power:1,upgradeLevel:1,boostUntil:0};
+try{const saved=JSON.parse(localStorage.getItem(SAVE_KEY)||"null");if(saved&&typeof saved==="object")data={...data,...saved};}catch(e){}
+let adController=null;	ry{if(window.Adsgram && ADSGRAM_BLOCK_ID!=="PASTE_YOUR_BLOCK_ID_HERE")adController=window.Adsgram.init({blockId:ADSGRAM_BLOCK_ID,debug:false});}catch(e){console.warn("AdsGram init error",e)}
+const $=id=>document.getElementById(id);let toastTimer;
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(data))}catch(e){}}
+function haptic(type="light"){try{if(tg?.HapticFeedback){tg.HapticFeedback.impactOccurred(type);return}}catch(e){}try{navigator.vibrate?.(type==="heavy"?45:20)}catch(e){}}
+function notify(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),1800)}
+function upgradeCost(){return Math.floor(100*Math.pow(1.65,data.upgradeLevel-1))}
+function activeBoost(){return Date.now()<data.boostUntil}
+function render(){const cost=upgradeCost();$("score").textContent=Math.floor(data.energy).toLocaleString("ru-RU");$("power").textContent="+"+data.power+" / тап";$("rate").textContent=activeBoost()?"×2 энергия · бонус активен":"+"+data.power+" энергия за тап";$("level").textContent=data.upgradeLevel;$("upgradeLvl").textContent="LVL "+data.upgradeLevel;$("costText").textContent="Цена: "+cost.toLocaleString("ru-RU")+" энергии";$("upgradeBtn").disabled=data.energy<cost;$("tapMission").textContent=Math.min(data.taps,100)+" / 100";$("tapBar").style.width=Math.min(data.taps/100*100,100)+"%";$("energyMission").textContent=Math.min(Math.floor(data.energy),500).toLocaleString("ru-RU")+" / 500";$("energyBar").style.width=Math.min(data.energy/500*100,100)+"%";if(activeBoost()){$("boostStatus").textContent="×2 · "+Math.ceil((data.boostUntil-Date.now())/1000)+"s";$ ("boostDesc").textContent="Усиление активно — двойная энергия за тап."}else{$("boostStatus").textContent="×1";$ ("boostDesc").textContent="Посмотри рекламу по желанию — энергия ×2 на 30 секунд."}save()}
+let lastMilestone=Math.floor(data.energy/100)*100;
+function tap(){const old=data.energy;const amount=data.power*(activeBoost()?2:1);data.energy+=amount;data.taps++;const crossed=Math.floor(data.energy/100)*100;if(crossed>lastMilestone){lastMilestone=crossed;haptic(crossed%500===0?"medium":"light");notify("✦ Рубеж "+crossed.toLocaleString("ru-RU")+" энергии!")}else haptic("light");const core=$("core");core.classList.remove("pulse");void core.offsetWidth;core.classList.add("pulse");render()}
+$("core").addEventListener("click",tap);
+$("upgradeBtn").addEventListener("click",()=>{const cost=upgradeCost();if(data.energy>=cost){data.energy-=cost;data.power++;data.upgradeLevel++;haptic("medium");notify("Импульс усилен!");render()}});
+$("adBtn").addEventListener("click",async()=>{if(!adController){notify("Добавь AdsGram Block ID для рекламы");return}const button=$("adBtn");button.disabled=true;button.textContent="Загрузка рекламы…";try{const result=await adController.show();if(result?.done===true&&!result?.error){data.boostUntil=Date.now()+30000;haptic("heavy");notify("Бонус ×2 активирован на 30 секунд!")}else{notify("Просмотр не завершён — бонус не начислен")}}catch(e){notify("Реклама недоступна. Попробуй позже")}finally{button.disabled=false;button.textContent="▶ Получить ×2 за рекламу · 30 сек";render()}});
+render();setInterval(()=>{if(data.boostUntil&&Date.now()>=data.boostUntil){data.boostUntil=0;render()}else if(activeBoost())render()},1000);
+</script>
 </body>
 </html>
